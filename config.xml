@@ -3,5 +3,11 @@
     <settings>
         <setting id="base_path">
         </setting>
+        <setting id="work_folder">
+        </setting>
+        <setting id="backup_folder">
+        </setting>
     </settings>
+    <!-- IE Configuration -->
+    <!-- https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver#required-configuration -->
 </configuration>
