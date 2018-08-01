@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
     <settings>
-        <setting id="base_path">
-        </setting>
-        <setting id="work_folder">
-        </setting>
-        <setting id="backup_folder">
-        </setting>
+        <!-- Python installed path. Required when python is not in environment val PATH. -->
+        <setting id="base_path"></setting>
+        <!-- Main folder. -->
+        <setting id="work_folder"></setting>
+        <!-- Backup folder. -->
+        <setting id="backup_folder"></setting>
     </settings>
-    <!-- IE Configuration -->
-    <!-- https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver#required-configuration -->
+
+    <!-- Required -->
+    <!--   pip install selenium -->
+    <!--   pip install openpyxl -->
+    <!--   pip install pillow -->
+    <!--   pip install pyautogui -->
+    <!--   pip install pyperclip -->
+
+    <!-- Test environment -->
+    <!--   os      : Windows 10 Pro -->
+    <!--   office  : Excel 2013 -->
+    <!--   browser : IE11 -->
+    <!--     IE Configuration for selenium -->
+    <!--     https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver#required-configuration -->
+
+    <!-- TestSiet: EasyBuggy -->
+    <!--   https://github.com/k-tamura/easybuggy/blob/master/README.jp.md -->
 </configuration>

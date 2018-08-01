@@ -12,3 +12,6 @@ wb["Sheet2"]["B4"].protection = copy(wb["Sheet1"]["B2"].protection)
 wb["Sheet2"]["B4"].alignment = copy(wb["Sheet1"]["B2"].alignment)
 
 wb.save(r"C:\Users\linxu_000\Desktop\python script\testFolder\test1copy.xlsx")
+
+#TODO
+#read,write excel with style
