@@ -1,6 +1,8 @@
 import os
 from selenium import webdriver
 import xml.etree.ElementTree as et
+from PIL import Image as pillowImage
+from io import BytesIO
 
 base_path = ""
 configFilePath = "config.xml"
@@ -16,3 +18,4 @@ browser.get("http://www.google.co.jp")
 textbox = browser.find_element_by_name('q')
 textbox.send_keys('python')
 textbox.submit()
+
