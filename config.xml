@@ -7,6 +7,8 @@
         <setting id="work_folder"></setting>
         <!-- Backup folder. -->
         <setting id="backup_folder"></setting>
+        <!-- Required when python is not in environment val JAVA_HOME. -->
+        <setting id="java_home"></setting>
     </settings>
 
     <!-- Required -->
