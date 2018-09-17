@@ -20,6 +20,7 @@ wb.save(path)
 
    インジェクションなど脅威はシンプルで診断できる。
    サンプルは[ここ](https://github.com/zaproxy/zaproxy/wiki/ApiPython)
+
 ```python
 import time
 from zapv2 import ZAPv2
@@ -35,6 +36,7 @@ while (int(zap.ascan.status(scanid)) < 100):
 * Seleniumよく使うメソッド
 
    ブラウザ自動操作で、退屈な事務作業を減らせよう。
+
 ~~~python
 from selenium import webdriver
 browser = webdriver.Ie() #他のブラウザも同様
@@ -58,6 +60,7 @@ element.get_attribute("value")
 * IP設定
 
    頻繁にIP切り替えが必要な時に有効
+
 ~~~dos
 netsh interface ip set address [interface name] static [ip] [subnet mask] [gateway]
 
@@ -65,11 +68,13 @@ netsh interface ip set address "イーサネット" static 192.168.100.100 255.2
 ~~~
 
 ### ライブラリ インストール ###
+
 ~~~dos
 # python 3.7
 python -m pip install --upgrade pip
 pip install numpy
 pip install pandas
+pip install scipy
 pip install requests
 pip install selenium
 pip install openpyxl
