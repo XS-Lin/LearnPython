@@ -4,3 +4,6 @@ config_local.xml
 .vs/slnx.sqlite
 .vs/python_test/v15/.suo
 .vs/ProjectSettings.json
+.vscode/settings.json
+*.json
+.vscode/settings.json
