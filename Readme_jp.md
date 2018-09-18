@@ -57,14 +57,59 @@ element.click()
 element.get_attribute("value")
 ~~~
 
-* IP設定
+### zap & selenium & openpyxl  ###
 
-   頻繁にIP切り替えが必要な時に有効
+環境:
 
-~~~dos
-netsh interface ip set address [interface name] static [ip] [subnet mask] [gateway]
+    Windows 10 64bit
+    Excel 2013
+    OWASP ZAP 2.7
+    Selenium 3.14.0
+    EasyBuggy 1.3.9
+    IE11
 
-netsh interface ip set address "イーサネット" static 192.168.100.100 255.255.255.0 192.168.100.1
+設定:
+
+[参照元(英語)](https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver#required-configuration)
+    
+    インターネット オプション
+
+        セキュリティタブの「インターネット」「ローカル イントラネット」「信頼済みサイト」「制限付きサイト」の保護モードを同じ設定値にする。
+        （全てオンまたはすべてオフ）
+        
+        詳細設定タブの「拡張保護モードを有効にする*」をオフにする
+    
+    Windows10 設定 -> ディスプレイ -> 拡大縮小とレイアウト -> 100%にする
+
+    以下のレジストリキー追加(あれば不要)
+    HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BFCACHE
+    サブキー iexplore.exe DWORD 0
+
+~~~python
+# seleinum で画面キャプチャーを撮って、Excelに保存
+import os
+from io import BytesIO
+from selenium import webdriver
+from PIL import Image as pillowImage
+import openpyxl
+from openpyxl.drawing.image import Image as pyxlImage
+
+ieDriverPath = r"\IEDriverServer.exe" # IE Driver のパス
+browser = webdriver.Ie(ieDriverPath)
+
+browser.get("http://www.google.co.jp") # Googleを開いて、pythonを検索
+textbox = browser.find_element_by_name('q')
+textbox.send_keys('python')
+textbox.submit()
+
+screenShot = browser.get_screenshot_as_png() # 画面キャプチャーを撮る
+im = pillowImage.open(BytesIO(screenShot))
+img = pyxlImage(im)
+
+wb = openpyxl.load_workbook(filename='test1.xlsx') # Excelテンプレート(空ファイル)
+ws = wb["Sheet1"]
+ws.add_image(img,'D3')
+wb.save("test3.xlsx")
 ~~~
 
 ### ライブラリ インストール ###
@@ -88,4 +133,16 @@ pip install wmi
 ~~~dos
 # python 3.6.5
 pip install tensorflow
+~~~
+
+### その他 ###
+
+* IP設定
+
+   頻繁にIP切り替えが必要な時に有効
+
+~~~dos
+netsh interface ip set address [interface name] static [ip] [subnet mask] [gateway]
+
+netsh interface ip set address "イーサネット" static 192.168.100.100 255.255.255.0 192.168.100.1
 ~~~
