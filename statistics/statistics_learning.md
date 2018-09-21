@@ -222,3 +222,180 @@ seaborn.pairplot(iris, hue = "species", palette = 'gray')
 
 #### 第３部 第4章 母集団からの標本抽出シミュレーション ####
 
+##### 確率密度計算 stats.norm.pdf #####
+
+~~~python
+import numpy
+import pandas
+import scipy
+from scipy import stats
+from matplotlib import pyplot
+%matplotlib inline
+import seaborn
+%precision 3
+
+x=numpy.arange(start=1,stop=7.1,step=0.1)
+y=stats.norm.pdf(x=x,loc=4,scale=0.8)
+pyplot.plot(x,y,color='black')
+~~~
+
+##### 正規分布に従う乱数生成 stats.norm.rvs #####
+
+~~~python
+import numpy
+import pandas
+import scipy
+from scipy import stats
+from matplotlib import pyplot
+%matplotlib inline
+import seaborn
+%precision 3
+# 平均loc 標準偏差scale サンプルサイズsize
+sampling_norm = stats.norm.rvs(loc=4,scale=0.8,size=10)
+sampling_norm
+~~~
+
+#### 第３部 第5章 標本の統計量の性質 ####
+
+##### 10000個標本平均 #####
+
+~~~python
+import numpy
+import pandas
+import scipy
+from scipy import stats
+from matplotlib import pyplot
+%matplotlib inline
+import seaborn
+%precision 3
+seaborn.set()
+
+population = stats.norm(loc=4,scale=0.8)
+sample_mean_array = numpy.zeros(10000)
+numpy.random.seed(1)
+for i in range(0,10000):
+    sample = population.rvs(size = 10)
+    sample_mean_array[i] = scipy.mean(sample)
+
+mean = scipy.mean(sample_mean_array)
+std = scipy.std(sample_mean_array)
+seaborn.distplot(sample_mean_array,color='black')
+~~~
+
+##### サンプルサイズが大きくなると、標本平均は母平均に近づいていく #####
+
+~~~python
+import numpy
+import pandas
+import scipy
+from scipy import stats
+from matplotlib import pyplot
+%matplotlib inline
+import seaborn
+%precision 3
+seaborn.set()
+
+population = stats.norm(loc=4,scale=0.8)
+
+size_array = numpy.arange(start=10,stop=100100,step=100)
+sample_mean_array_size = numpy.zeros(len(size_array))
+numpy.random.seed(1)
+for i in range(0,len(size_array)):
+    sample = population.rvs(size = size_array[i])
+    sample_mean_array_size[i] = scipy.mean(sample)
+
+pyplot.plot(size_array,sample_mean_array_size,color='black')
+pyplot.xlabel("sample size")
+pyplot.ylabel("sample mean")
+~~~
+
+##### 標本平均の標準偏差は、母標準偏差よりも小さい #####
+
+~~~python
+import numpy
+import pandas
+import scipy
+from scipy import stats
+from matplotlib import pyplot
+%matplotlib inline
+import seaborn
+%precision 3
+seaborn.set()
+
+# 平均4、標準偏差0.8(分散0.64)の正規分布
+population = stats.norm(loc=4,scale=0.8)
+size_array = numpy.arange(start=2,stop=102,step=2)
+sample_mean_std_array = numpy.zeros(len(size_array))
+numpy.random.seed(1)
+for i in range(0,len(size_array)):
+    sample_mean_array = numpy.zeros(100)
+    for m in range(0,100):
+        sample = population.rvs(size = size_array[i])
+        sample_mean_array[m] = scipy.mean(sample)
+    sample_mean_std_array[i] = scipy.std(sample_mean_array,ddof=1)
+pyplot.plot(size_array,sample_mean_std_array,color='black')
+pyplot.xlabel("sample size")
+pyplot.ylabel("mean_std value")
+~~~
+
+##### サンプルサイズが大きくなると、標準誤差は小さくなる #####
+
+~~~python
+import numpy
+import pandas
+import scipy
+from scipy import stats
+from matplotlib import pyplot
+%matplotlib inline
+import seaborn
+%precision 3
+seaborn.set()
+
+population = stats.norm(loc=4,scale=0.8)
+
+size_array = numpy.arange(start=2,stop=102,step=2)
+sample_mean_std_array = numpy.zeros(len(size_array))
+numpy.random.seed(1)
+for i in range(0,len(size_array)):
+    sample_mean_array = numpy.zeros(100)
+    for m in range(0,100):
+        sample = population.rvs(size = size_array[i])
+        sample_mean_array[m] = scipy.mean(sample)
+    sample_mean_std_array[i] = scipy.std(sample_mean_array,ddof=1)
+
+standard_error = 0.8 / numpy.sqrt(size_array)
+
+pyplot.plot(size_array,sample_mean_std_array,color='black')
+pyplot.plot(size_array,standard_error,color='black',linestyle='dotted')
+pyplot.xlabel("sample size")
+pyplot.ylabel("mean_std value")
+~~~
+
+##### サンプルサイズ大なら、不偏分散は母分散に近い #####
+
+~~~python
+import numpy
+import pandas
+import scipy
+from scipy import stats
+from matplotlib import pyplot
+%matplotlib inline
+import seaborn
+%precision 3
+seaborn.set()
+
+population = stats.norm(loc=4,scale=0.8)
+
+size_array = numpy.arange(start=10,stop=100100,step=100)
+unbias_var_array_size = numpy.zeros(len(size_array))
+numpy.random.seed(1)
+for i in range(0,len(size_array)):
+    sample = population.rvs(size = size_array[i])
+    unbias_var_array_size[i] = scipy.var(sample,ddof=1)
+
+pyplot.plot(size_array,unbias_var_array_size,color='black')
+pyplot.xlabel("sample size")
+pyplot.ylabel("unbias var")
+~~~
+
+#### 第３部 第6章 正規分布とその応用 ####
