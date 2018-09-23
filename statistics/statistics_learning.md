@@ -1,5 +1,168 @@
 # 統計学入門 #
 
+## 数式表記（TeX Math） ##
+
+[利用可能な数式](https://katex.org/docs/supported.html)
+[(アルファベット順)](https://katex.org/docs/support_table.html)
+
+$$ a' a'' a''' a^{\prime} \acute{a} \bar{a} \breve{a} \check{a} $$
+
+$$ \dot{a} \ddot{a} \grave{a} \hat{\theta} \widehat{a+b} \tilde{a} $$
+
+$$ \widetilde{AB} \utilde{AB} \vec{F} \overleftarrow{AB} $$
+
+$$ \underleftarrow{AB} \overleftharpoon{ac} \overleftrightarrow{AB} $$
+
+$$ \underleftrightarrow{AB} \overline{AB} \underline{AB} \widecheck{ac} $$
+
+$$ \mathring{g} \overgroup{AB} \undergroup{AB} \Overrightarrow{AB} $$
+
+$$ \overrightarrow{AB} \underrightarrow{AB} \overrightharpoon{AB} $$
+
+$$ \overbrace{AB} \underbrace{AB} \overlinesegment{AB}  $$
+
+$$ \underlinesegment{AB} $$
+
+$$ () [] \{ \} < > | \| $$
+
+$$ \lvert \rvert \lang \rang \lt \gt \le \ge \lbrack \rbrack $$
+
+$$ \lbrace \rbrace \langle \rangle \vert \Vert \lVert \rVert $$
+
+$$ \lceil \rceil \lfloor \rfloor \lmoustache \rmoustache \lgroup \rgroup $$
+
+$$ \ulcorner \urcorner \left. \right. \backslash $$
+
+$$ \uparrow \downarrow \leftarrow \rightarrow $$
+
+$$ \Uparrow \Downarrow \Leftarrow \Rightarrow $$
+
+$$ \left(\LARGE{AB}\right) $$
+
+$$ ( \big( \Big( \bigg( \Bigg( $$
+
+~~~math
+\left \middle \right
+\big \Big \bigg \Bigg
+\bigl \Bigl \biggl \Biggl
+\bigm \Bigm \biggm \Biggm
+\bigr \Bigr \biggr \Biggr
+~~~
+
+$$
+\begin{matrix}
+a & b \\
+c & d 
+\end{matrix}
+$$
+
+$$
+\begin{array}{cc}
+a & b \\
+c & d
+\end{array}
+$$
+
+$$ \begin{pmatrix} a & b \\ c & d \end{pmatrix} $$
+
+$$ \begin{bmatrix} a & b \\ c & d \end{bmatrix} $$
+
+$$ \begin{vmatrix} a & b \\ c & d \end{vmatrix} $$
+
+$$ \begin{Vmatrix} a & b \\ c & d \end{Vmatrix} $$
+
+$$ \begin{Bmatrix} a & b \\ c & d \end{Bmatrix} $$
+
+$$ \def\arraystrech{1.5}
+   \begin{array}{c:c:c}
+   a & b & c \\ \hline
+   d & e & f \\ \hdashline
+   g & h & i
+   \end{array}
+$$
+
+$$
+\begin{aligned}
+a &= b + c \\
+d + e &= f
+\end{aligned}
+$$
+
+$$
+\begin{alignedat}{2}
+10&x + &3&y = 2 \\
+3&x + &13&y =4
+\end{alignedat} 
+$$
+
+$$ \begin{gathered} a=b \\ e=b+c \end{gathered} $$
+
+$$ x = \begin{cases} 
+       a &\text{if } b \\
+       c &\text{if } d
+       \end{cases}
+$$
+
+$$ \Alpha \Beta \Gamma \Delta \Epsilon \Zeta \Eta \Theta \Iota \Kappa \Lambda \Mu \Nu \Xi \Omicron \Pi \Sigma \Tau \Upsilon \Phi \Chi \Psi \Omega  $$
+$$ \varGamma \varDelta \varTheta \varLambda \varXi \varPi \varSigma \varUpsilon \varPhi \varOmega $$
+
+$$ \alpha \beta \gamma \delta \epsilon \zeta \eta \theta \iota \kappa \lambda \mu \nu \xi \omicron \pi \sigma \tau \upsilon \phi \chi \psi \omega  $$
+$$ \varepsilon \varkappa \vartheta \thetasym \varpi \varrho \varsigma \varphi \digamma $$
+
+$$ \cancel{5} \bcancel{5} \xcancel{ABC} \sout{abc} \not = $$
+
+$$ \overbrace{a+b+c}^{\text{note}} \underbrace{a+b+c}_{\text{note}} $$
+
+$$ \boxed{\pi=\frac c d} $$
+
+$$ \tag{hi} x+y^{2x} $$
+
+$$ \tag*{hi} x+y^{2x} $$
+
+$$ x^n x_n $$
+
+$$ _u^o $$
+
+$$ a \atop b $$
+
+$$ a\raisebox{0.25em}{b}c $$
+
+$$ \stackrel{!}{=} \overset{!}{=} \underset{!}{=} $$
+
+$$ {=}\mathllap{/\,} \mathrlap{\,/}{=} $$
+
+$$ \left(x^{\smash{2}}\right) (x^2) \sqrt{\smash{y}} $$
+
+$$ \sum_{\mathclap{1 \le i \le i \le n}} x_{ij} $$
+
+$$ \forall \exists \exist \nexists \in \notin \isin \complement \subset $$
+
+$$ \supset \mid \land \lor \ni \therefore \because \mapsto \to \gets  $$
+
+$$ \leftrightarrow \notni \emptyset \empty \varnothing \implies \impliedby $$
+
+$$ \iff \neg \lnot \not $$
+
+$$ \sum \int \iint \iiint \intop \smallint $$
+
+$$ \cdot \cdotp \And \bullet \cap \cup \circ \mp \pm  $$
+
+$$ x \mod a \\ x \pmod a \\ x \pod a $$
+
+$$ \frac{a}{b} {a \over b} \tfrac{a}{b} \dfrac{a}{b} \cfrac{a}{1+\cfrac{1}{b}} $$
+
+$$ \binom{n}{k} \dbinom{n}{k} \tbinom{n}{k}  $$
+
+$$ {n \brace k} {c \choose k} {n\brack k} $$
+
+$$ \sqrt{x} \sqrt[3]{y} $$
+
+$$ \xrightarrow[def]{abc} $$
+
+$$ %comment $$
+
+$$ \infty $$
+
 ## 再確認ためのメモ ##
 
 ### Pythonで学ぶ統計学の教科書 ###
@@ -399,3 +562,4 @@ pyplot.ylabel("unbias var")
 ~~~
 
 #### 第３部 第6章 正規分布とその応用 ####
+
