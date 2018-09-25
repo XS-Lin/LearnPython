@@ -563,3 +563,91 @@ pyplot.ylabel("unbias var")
 
 #### 第３部 第6章 正規分布とその応用 ####
 
+##### 正規分布 #####
+
+$$ N(x \mid \mu,\sigma^2)=\frac{1}{\sqrt{2 \pi \sigma^2}} e^{\{ -\frac{(x-\mu)^2}{2 \sigma ^ 2} \}} $$
+
+~~~python
+import numpy
+import pandas
+import scipy
+from scipy import stats
+from matplotlib import pyplot
+%matplotlib inline
+import seaborn
+%precision 3
+seaborn.set()
+
+x = 3
+mu = 4
+sigma = 0.8
+a1 = 1 / (scipy.sqrt(2 * scipy.pi * sigma ** 2)) * scipy.exp (-((x - mu) ** 2) / (2 * sigma ** 2))
+
+a2 = stats.norm.pdf(loc = 4, scale = 0.8, x = 3)
+
+print(a1)
+print(a2)
+~~~
+
+##### 累積分布関数 #####
+
+$$ F(X)=P(X<x) $$
+
+正規分布で、3以下となる確率
+
+$$ P(X<3)=\int_{-\infty}^{3} \frac{1}{\sqrt{2 \pi \sigma^2}} e^{\{- \frac{(x - \mu)^2}{2 \sigma^2} \}} dx $$
+
+##### t値 #####
+
+$$ t = \frac{\hat{\mu} - \mu}{\hat{\sigma} / \sqrt{N}} \\
+\hat{\mu} \text{:標準平均 } \mu \text{:母平均 } \hat{\sigma} \text{:標準偏差（不偏分散の平方根） } N \text{:サンプルサイズ }
+$$
+
+$$ t \text{値} = \frac{\text{標本平均} - \text{母平均}}{\text{標準誤差}} $$
+
+##### t値の標本分布 #####
+
+~~~python
+import numpy
+import pandas
+import scipy
+from scipy import stats
+from matplotlib import pyplot
+%matplotlib inline
+import seaborn
+%precision 3
+seaborn.set()
+
+numpy.random.seed(1)
+t_value_array = numpy.zeros(10000)
+norm_dist = stats.norm(loc=4,scale=0.8)
+for i in range(0,10000):
+    sample = norm_dist.rvs(size = 10)
+    sample_mean = scipy.mean(sample)
+    sample_std = scipy.std(sample,ddof=1)
+    sample_se = sample_std / scipy.sqrt(len(sample))
+    t_value_array[i] = (sample_mean - 4) / sample_se
+seaborn.distplot(t_value_array,color="black")
+x = numpy.arange(start = -8,stop=8.1, step=0.1)
+pyplot.plot(x, stats.norm.pdf(x = x), color = 'black', linestyle='dotted')
+~~~
+
+#### 第３部 第7章 推定 ####
+
+##### ts #####
+
+~~~python
+
+~~~
+
+##### ts #####
+ 
+~~~python
+
+~~~
+
+
+
+
+
+
