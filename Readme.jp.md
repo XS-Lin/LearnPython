@@ -127,7 +127,8 @@ pip install pillow
 pip install pyautogui
 pip install python-owasp-zap-v2.4
 pip install pywin32
-pip install wmi
+pip install matplotlib
+pip install seaborn
 ~~~
 
 ~~~dos
