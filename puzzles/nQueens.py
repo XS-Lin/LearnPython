@@ -1,36 +1,50 @@
-# standard
 # 8 Queens
-import copy
+N = 4
+CHESS = [(x, y) for x in range(0, N) for y in range(0, N)]
 
-statusTree = []
-currentNode = []
+class State:
+    def __init__(self):
+        self.value = []
+
+    def isEqual(self, state):
+        return set(self.value) == set(state.value)
+
+    def validMovesData(self):
+        return [q for q in CHESS if all([
+                    q != s and q[0] != s[0] and q[1] != s[1] and q[0] - s[0] != q[1] - s[1]
+                    for s in self.value
+                ])]
+
+    def copy(self):
+        state = State()
+        state.value = [s for s in self.value]
+        return state
+
+    def storeData(self, q):
+        self.value.append(q)
+
 results = []
+def search():
+    stack = [State()]
+    finished = set()
 
-n = 8
-chess = [(x, y) for x in range(0, n) for y in range(0, n)]
-
-def checkNode(node):
-    isError = False
-    if len(node) <= 1:
-        return isError
-    for q1, q2 in [(q1, q2) for q1 in node for q2 in node if q1 != q2]:
-        isError = isError \
-            or q1[0] - q2[0] == 0 \
-            or q1[1] - q2[1] == 0 \
-            or q1[0] - q2[0] == q1[1] - q2[1]
-    return isError
-
-def tryAddQueen(node):
-    count = len(node)
-    for q in chess:
-        node.append(q)
-        if checkNode(currentNode):
-            node.remove(q)
-        elif any([set(node) == set(x) for x in statusTree]):
-            node.remove(q)
-    return len(node) == count + 1
+    while len(stack) > 0:
+        n = stack.pop()
+        finished.add(n.copy())
+        #print(len(stack))
+        #print(len(n.value))
+        #print(n.value)
+        for q in n.validMovesData():
+            nextState = n.copy()
+            nextState.storeData(q)
             
+            if not any(nextState.isEqual(x) for x in finished):
+               if len(nextState.value) == N:
+                   results.append(nextState.value)
+                   continue
+               stack.append(nextState)
 
-print(tryAddQueen(currentNode))
-print(currentNode)
-# 7個設定できたが。。
+search()
+for r in results:
+    print(r)
+print(len(results))
