@@ -1,5 +1,5 @@
-# 8 Queens
-N = 8
+# The n-Queens Problem
+N = 4
 CHESS = [(x, y) for x in range(0, N) for y in range(0, N)]
 
 class State:
