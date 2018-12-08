@@ -1,4 +1,8 @@
 # Anagram Detedction
+# アナグラム発見
+#  アナグラムとは、同じ文字からなる別の単語のことである。
+#  例えば、"eat"、"ate"、"tea"はすべて互いにアナグラムである。
+#  大量の英単語が記載されているファイルからすべてのアナグラムの集合を見つけよ。
 
 def detedction(text):
     wordWithIndex = [[word,sorted(word)] for word in text.split()]
