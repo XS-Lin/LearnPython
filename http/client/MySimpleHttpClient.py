@@ -2,10 +2,17 @@
 # スタブサーバはPANによって、結果を戻す
 
 import urllib.request
-import urllib.response
 import urllib.parse
 
-data = urllib.parse.urlencode({"PAN":"1234123412341234",'spam': 1, 'eggs': 2, 'bacon': 0})
+reqAddtionalHeaders = {
+    'X-Request=Process':"01"
+}
+
+data = urllib.parse.urlencode({"PAN":"1234123412341234"})
 data = data.encode('utf-8')
-with urllib.request.urlopen("http://localhost:8000", data) as f:
+
+req = urllib.request.Request("http://localhost:8000", data,reqAddtionalHeaders)
+
+with urllib.request.urlopen(req) as f:
     print(f.read().decode('utf-8'))
+ 

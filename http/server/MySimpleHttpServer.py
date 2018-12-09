@@ -1,10 +1,8 @@
 # POSTのリクエストを受けた場合、スタブサーバはPANによって、結果を戻す
 # GETのリクエストを受けた場合、スタブサーバが動作中の情報を戻す。(Stub Opened.)
 
-import io
 import os
 import sys
-import datetime
 import urllib.parse
 import html
 
