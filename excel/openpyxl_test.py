@@ -1,4 +1,4 @@
-﻿import openpyxl
+import openpyxl
 from copy import copy
 
 wb = openpyxl.load_workbook(r"C:\Users\linxu_000\Desktop\python script\testFolder\test1.xlsx")

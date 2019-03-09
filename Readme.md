@@ -1,1 +1,0 @@
-https://www.pupha.net/archives/2467/
