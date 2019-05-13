@@ -1,1 +1,1 @@
-﻿
+﻿import cx_Oracle
