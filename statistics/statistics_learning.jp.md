@@ -195,9 +195,9 @@ cov_0 = sum((x - mu_x) * (y - mu_y)) / N
 cov_1 = sum((x - mu_x) * (y - mu_y)) / (N - 1)
 
 # 共分散計算 分母N
-scipy.cov(x, y, ddof = 0) 
+scipy.cov(x, y, ddof = 0)
 # 共分散計算 分母N-1
-scipy.cov(x, y, ddof = 1) 
+scipy.cov(x, y, ddof = 1)
 
 # ピアソンの積率相関係数
 sigma_2_x = scipy.var(x, ddof = 1)
