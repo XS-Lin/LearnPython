@@ -1,8 +1,4 @@
-# 碧落 #
-
-毎日色々面白いことを試している。
-
-## ライブラリ インストール ##
+# ライブラリ インストール #
 
 ~~~dos
 # python 3.7.3
@@ -21,22 +17,12 @@ pip install matplotlib
 pip install seaborn
 pip install django
 pip install tensorflow
+pip install opencv-python
+pip install keyboard
 ~~~
 
 ~~~dos
 # python 3.7.3
 pip list --outdated
 pip install --upgrade <package_name>
-~~~
-
-### その他 ###
-
-* IP設定
-
-   頻繁にIP切り替えが必要な時に有効
-
-~~~dos
-netsh interface ip set address [interface name] static [ip] [subnet mask] [gateway]
-
-netsh interface ip set address "イーサネット" static 192.168.100.100 255.255.255.0 192.168.100.1
 ~~~
