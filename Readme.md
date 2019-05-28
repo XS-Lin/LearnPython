@@ -1,4 +1,4 @@
-# ライブラリ インストール #
+# Install Lib #
 
 ~~~dos
 # python 3.7.3
@@ -26,4 +26,9 @@ pip install cirq
 # python 3.7.3
 pip list --outdated
 pip install --upgrade <package_name>
+~~~
+
+~~~shell
+# Upgrade all installed library by powshell for windows. (Tested on windows 10)
+foreach ($line in @(.\pip list --outdated)) { if (-not($line.StartsWith("Package") -or $line.StartsWith("----"))) { .\pip install --upgrade $line.Split(" ")[0] } }
 ~~~
