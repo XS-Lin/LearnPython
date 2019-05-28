@@ -11,14 +11,15 @@ pip install selenium
 pip install openpyxl
 pip install pillow
 pip install pyautogui
-pip install python-owasp-zap-v2.4
 pip install pywin32
 pip install matplotlib
 pip install seaborn
+pip install python-owasp-zap-v2.4
 pip install django
-pip install tensorflow
 pip install opencv-python
 pip install keyboard
+pip install tensorflow
+pip install cirq
 ~~~
 
 ~~~dos
