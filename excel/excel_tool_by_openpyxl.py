@@ -14,11 +14,11 @@
 #       http://ip:PORT/statusを開く
 #   処理コマンド(HTTPリクエスト送信)
 #     例:bash
-#       curl -H 'Content-Type:application/json; charset=utf-8' -d "{"key":"70949d2b88c04e869b074597700dd22d","fileName":"test.xml","process_method":"fun1"}" http://ip:PORT/read
+#       curl -H 'Content-Type:application/json; charset=utf-8' -d '{"key":"70949d2b88c04e869b074597700dd22d","fileName":"test.xml","process_method":"fun1","param":"xxxxxxx"}' http://ip:PORT/read
 #     例:bash
-#       curl -H 'Content-Type:application/json; charset=utf-8' -d "{"key":"70949d2b88c04e869b074597700dd22d","fileName":"test.xml","process_method":"fun2","data":"xxxxxxx"}" http://ip:PORT/write
-#   停止コマンド(python3はPython3.7のシンボリックリンク)
-#     python3 excel_tool_by_openpyxl.py stop
+#       curl -H 'Content-Type:application/json; charset=utf-8' -d "{"key":"70949d2b88c04e869b074597700dd22d","fileName":"test.xml","process_method":"fun2","param":"xxxxxxx"}" http://ip:PORT/write
+#   停止コマンド
+#     ctrl+c
 # 検証環境
 #   CentOs7.5
 #   Python3.7.3
@@ -30,6 +30,7 @@
 #   3.出力のExcelはExcel2010以上で表示できます。
 #   4.使用範囲は内部ネットワークと想定しています。
 #   5.デフォルト処理以外の場合は拡張が必要になります。
+#   6.動作確認しましたが、大きいサイズやインジェクションのテストは実施していません。
 import os
 import openpyxl
 import urllib.parse
@@ -47,7 +48,7 @@ ACCESS_KEY = "70949d2b88c04e869b074597700dd22d"
 # コマンド受信ポート
 PORT = 10001
 # ファイル読み取り時のヘーズフォルダ(外層はアクセスしない)
-BASE_FOLDER = ""
+BASE_FOLDER = "/var/tmp"
 # 中間ファイル保存用フォルダ
 WORK_FOLDER = "/"
 # 入力ファイルのフォルダ(WebAppのアップロードフォルダ)
@@ -57,7 +58,7 @@ OUTPUT_FOLDER = "DOWNLOAD"
 # 最大リクエストサイズ1M
 MAX_BYTES = 1 * 1024 * 1024
 # -----------------------------------------------------------------------------
-# 戻り値はstringと想定
+# 各処理関数の戻り値はstringと想定(文字列またはシリアライズドオブジェクト)
 class Action:
     def __init__(self):
         return
@@ -77,18 +78,54 @@ class Action:
         except Exception as e:
             return e.message
         return 'Test success'
-    def test_read_excel_function(self):
-        return 'test_read_excel_function'
+    def test_read_excel_function(self,param):
+        '''Read data to json from excel identified by param like {"book"="read_excel.xlsx","sheet"="test","range"="A2:C3","header"="a,b,c"}'''
+        parameters = json.loads(param)
+        excelFileFullName = os.path.join(BASE_FOLDER,parameters['book'])
+        try:
+            if (os.path.isfile(excelFileFullName)):
+                wb = openpyxl.load_workbook(excelFileFullName,data_only=True)
+                ws = wb[parameters['sheet']]
+            else:
+                return "File or sheet does not exist!"
+            startCell = parameters['range'].split(':')[0]
+            endCell = startCell if len(parameters['range'].split(':')) == 1 else parameters['range'].split(':')[1]
+            cellRange = ws[startCell:endCell]
+            result = []
+            headers = parameters['header'].split(',')
+            for row in cellRange:
+                result.append({headers[i]:row[i].value for i in range(0,len(row))})
+        except Exception as e:
+            return e.message
+        return json.dumps(result)
     def test_write_excel_function(self,param):
-        return 'test_write_excel_function'
+        '''Write data to excel from param like {"book":"write_excel.xlsx","sheet":"test","range":"A2:C3","data":[{"A2":"10","B2":"11","C2":"12"},{"A3":"30","B3":"31","C3":"32"}]}'''
+        parameters = json.loads(param)
+        excelFileFullName = os.path.join(BASE_FOLDER,parameters['book'])
+        try:
+            if (os.path.isfile(excelFileFullName)):
+                return 'File exists!'
+            else:
+                wb = openpyxl.Workbook()
+                ws = wb.active
+            ws.title = parameters['sheet']
+            for row in parameters['data']:
+               for k,v in row.items():
+                  ws[k].value = v
+            wb.save(excelFileFullName)
+        except Exception as e:
+            return e.message
+        return 'success'
 
 # UnitTest
-#if (platform.system() == 'Windows'):
-#    BASE_FOLDER = 'D:\Test'
-#if (platform.system() == 'Linux'):
-#    BASE_FOLDER = '/home/oracle'
+if (platform.system() == 'Windows'):
+    BASE_FOLDER = 'D:\Test'
+if (platform.system() == 'Linux'):
+    BASE_FOLDER = '/home/oracle'
 #act = Action()
 #act.test_excel_function()
+#act.test_write_excel_function('{"book":"write_excel.xlsx","sheet":"test","range":"A2:C3","data":[{"A2":"10","B2":"11","C2":"12"},{"A3":"30","B3":"31","C3":"32"}]}')
+#print(act.test_read_excel_function('{"book":"read_excel.xlsx","sheet":"test","range":"A2:C3","header":"a,b,c"}'))
 
 class RequestHandler(BaseHTTPRequestHandler):
     server_version = "Excel Process Server/0.1"
@@ -127,6 +164,11 @@ class RequestHandler(BaseHTTPRequestHandler):
         decodedPostData = rawPostData.decode('utf-8')
         #postData = urllib.parse.parse_qs(decodedPostData)
         postData = json.loads(decodedPostData)
+
+        if postData is None or 'key' not in postData.keys() or postData['key'] != ACCESS_KEY:
+            # 接続を強制切断とする
+            return
+
         message = ""
         if (self.path == '/read'):
             message = self.read(postData)
@@ -142,7 +184,6 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
         self.wfile.write(encoded)
-
         return
 
     def status(self):
@@ -155,7 +196,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         message = ''
         try:
             fun = getattr(act,data['process_method'])
-            message = json.dumps({'status':'success','data':fun()})
+            message = json.dumps({'status':'success','data':fun(data['param'])})
         except:
             message = json.dumps({'status':'error','data':'Parameter process_method:{0} is not correct!'.format(data['process_method'])})
         return message
@@ -169,15 +210,22 @@ class RequestHandler(BaseHTTPRequestHandler):
             message = json.dumps({'status':'error','data':'Parameter process_method:{0} is not correct!'.format(data['process_method'])})
         return message
 # -----------------------------------------------------------------------------
-#handler = RequestHandler
-#httpd = ThreadingHTTPServer(('',PORT),handler)
-#httpd.serve_forever()
+handler = RequestHandler
+httpd = ThreadingHTTPServer(('',PORT),handler)
+httpd.serve_forever()
 # -----------------------------------------------------------------------------
 # 参考情報
 #   https://docs.python.org/ja/3/library/platform.html
 #   https://docs.python.org/ja/3/library/http.server.html
 
 # UnitTest From Powershell
-# $postText = @{key="70949d2b88c04e869b074597700dd22d";fileName="test.xml";process_method="test_read_excel_function"} | ConvertTo-Json -Compress
+# $postText = @{key="70949d2b88c04e869b074597700dd22d";fileName="test.xml";process_method="test_read_excel_function";param='{"book":"read_excel.xlsx","sheet":"test","range":"A2:C3","header":"a,b,c"}'} | ConvertTo-Json -Compress
 # $postBody = [Text.Encoding]::UTF8.GetBytes($postText)
 # Invoke-RestMethod -Method POST -Uri "http://localhost:10001/read" -Body $postBody -ContentType application/json
+# $postText = @{key="70949d2b88c04e869b074597700dd22d";fileName="test.xml";process_method="test_write_excel_function";param='{"book":"write_excel.xlsx","sheet":"test","range":"A2:C3","header":"a,b,c","data":[{"A2":"10","B2":"11","C2":"12"},{"A3":"30","B3":"31","C3":"32"}]}'} | ConvertTo-Json -Compress
+# $postBody = [Text.Encoding]::UTF8.GetBytes($postText)
+# Invoke-RestMethod -Method POST -Uri "http://localhost:10001/write" -Body $postBody -ContentType application/json
+
+# UnitTest From curl
+# curl -H 'Content-Type:application/json; charset=utf-8' -d '{"key":"70949d2b88c04e869b074597700dd22d","fileName":"test.xml","process_method":"test_read_excel_function","param":"{\"book\":\"read_excel.xlsx\",\"sheet\":\"test\",\"range\":\"A2:C3\",\"header\":\"a,b,c\"}"}' http://localhost:10001/read
+# curl -H 'Content-Type:application/json; charset=utf-8' -d '{"key":"70949d2b88c04e869b074597700dd22d","fileName":"test.xml","process_method":"test_write_excel_function","param":"{\"book\":\"write_excel.xlsx\",\"sheet\":\"test\",\"range\":\"A2:C3\",\"header\":\"a,b,c\",\"data\":[{\"A2\":\"10\",\"B2\":\"11\",\"C2\":\"12\"},{\"A3\":\"30\",\"B3\":\"31\",\"C3\":\"32\"}]}"}' http://localhost:10001/write
