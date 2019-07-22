@@ -1,3 +1,68 @@
+# Django練習 #
+
+## 仮想サーバ構成 ##
+
+* ホスト: Windows 10 Home
+* VMルール: Virtual Box 6
+* ゲストOS: CentOs7.6
+  * 仮想CPU: 2
+  * メモリ: 4GB
+  * ディスク: 40GB
+  * ネットワーク　アダプタ: NAT + ホストオンリー
+
+## 練習環境構成 ##
+
+* python3
+* postgresql
+* django
+* nginx
+
+## 環境構築 ##
+
+1. VM作成とゲストOSのインストール
+
+1. python3インストール
+
+1. postgresqlインストール
+
+1. djangoインストール
+
+1. nginxインストール
+
+## 開発環境(Windows10 + VSCode) ##
+
+1. デバッグ環境設定
+
+1. 自動デプロイスクリプト作成
+
+## チュートリアル ##
+
+[さぁ始めましょう](https://docs.djangoproject.com/ja/2.2/intro/)
+
+### 注意すべき点(個人観点) ###
+
+## 練習用サイト作成 ##
+
+### 機能定義 ###
+
+1. メモ
+
+1. 読書リスト
+
+### 高可用性設計 ###
+
+1. バックアップとリカバリ
+
+1. クラスターとロードバランシング
+
+### 試験 ###
+
+1. 自動機能試験(Selenium)
+
+1. セキュリティ試験(ZAP)
+
+1. 高可用性試験
+
 
 # 情報 #
 
@@ -41,9 +106,6 @@ Email address: admin@example.com
 Password: 123456
 Password (again): 123456
 Superuser created successfully.
-
-
-
 ~~~
 
 ## その他 ##
