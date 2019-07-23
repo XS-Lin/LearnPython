@@ -1,7 +1,7 @@
 # Install Lib #
 
 ~~~dos
-# python 3.7.3
+# python 3.7.4
 python -m pip install --upgrade pip
 pip install numpy
 pip install pandas
@@ -23,12 +23,13 @@ pip install cirq
 ~~~
 
 ~~~dos
-# python 3.7.3
+# python 3.7.4
 pip list --outdated
 pip install --upgrade <package_name>
 ~~~
 
-~~~shell
+~~~powershell
 # Upgrade all installed library by powshell for windows. (Tested on windows 10)
+# Move to folder where pip is,then run the script bellow.
 foreach ($line in @(.\pip list --outdated)) { if (-not($line.StartsWith("Package") -or $line.StartsWith("----"))) { .\pip install --upgrade $line.Split(" ")[0] } }
 ~~~
