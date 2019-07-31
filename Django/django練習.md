@@ -155,23 +155,6 @@
    nginx -v
    ~~~
 
-## プロジェクト作成 ##
-
-1. プロジェクト作成
-
-## 開発環境(Windows10 + VSCode) ##
-
-1. デバッグ環境設定
-
-   1. プロジェクト作成
-
-      ~~~powershell
-      django-admin startproject project
-      py manage.py startapp app
-      ~~~
-
-1. 自動デプロイスクリプト作成
-
 ## チュートリアル ##
 
 公式チュートリアル[さぁ始めましょう](https://docs.djangoproject.com/ja/2.2/intro/)
@@ -220,6 +203,48 @@
    1. 購入日、読破日を設定
 
    1. 読書感想記載(メモ帳機能)
+
+## 開発環境(Windows10 + VSCode) ##
+
+1. デバッグ環境設定
+
+   1. プロジェクト作成
+
+      ~~~powershell
+      django-admin startproject project
+      py manage.py startapp app
+      ~~~
+
+   1. モデル作成
+
+      ~~~powershell
+      py manage.py makemigrations app
+      py manage.py sqlmigrate app 0001 # 変更内容チェック
+      py manage.py migrate app
+      ~~~
+
+      **DBの種類によって生成されたSQLが違う**
+
+   1. 管理ユーザ作成(ローカル試験用)
+
+      ~~~powershell
+      py manage.py migrate # 初回のみ
+      py manage.py createsuperuser
+      Username: admin
+      Email address: admin@example.com
+      Password: 123456
+      Password (again): 123456
+      Superuser created successfully.
+      ~~~
+
+   1. 管理ページアクセステスト
+
+      ~~~powershell
+      py manage.py runserver
+      # browser http://127.0.0.1:8000/admin/
+      ~~~
+
+1. 自動デプロイスクリプト作成
 
 ### 高可用性設計 ###
 
