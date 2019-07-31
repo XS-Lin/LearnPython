@@ -112,6 +112,14 @@
    python3 -m django --version
    ~~~
 
+   ~~~sh
+   # Option
+   pip3 install django-richtextfield
+   pip3 install psycopg2
+   pip3 install django-crispy-forms # TODO
+   pip3 install django-filter # TODO
+   ~~~
+
 1. uwsgiインストール
 
    ~~~sh
@@ -124,7 +132,7 @@
    [Nginx Installation instructions RHEL/CentOS](https://nginx.org/en/linux_packages.html#RHEL-CentOS)
 
    ~~~sh
-   yum list nginx # デフォルトバージョンが1.12.2なので、最新版の1.17.1をインストール
+   yum list nginx # デフォルトバージョンが1.12.2、最新版の1.17.1をインストール
    yum install yum-utils
    vi /etc/yum.repos.d/nginx.repo
    # -------------------------START-------------------
@@ -147,29 +155,79 @@
    nginx -v
    ~~~
 
+## プロジェクト作成 ##
+
+1. プロジェクト作成
+
 ## 開発環境(Windows10 + VSCode) ##
 
 1. デバッグ環境設定
+
+   1. プロジェクト作成
+
+      ~~~powershell
+      django-admin startproject project
+      py manage.py startapp app
+      ~~~
 
 1. 自動デプロイスクリプト作成
 
 ## チュートリアル ##
 
-[さぁ始めましょう](https://docs.djangoproject.com/ja/2.2/intro/)
+公式チュートリアル[さぁ始めましょう](https://docs.djangoproject.com/ja/2.2/intro/)
+非公式チュートリアル[汎用業務Webアプリを最速で作る](https://qiita.com/okoppe8/items/54eb105c9c94c0960f14)
 
 ### 問題点と解決策 ###
+
+1. 「py manage.py runserver」反応なし、原因はmanage.pyの1行目
+
+   ~~~python
+   #!/usr/bin/env python
+   ~~~
+
+   Windowsの場合、該当行を削除
+   Linuxの場合、以下のように変更
+
+   ~~~python
+   #!/usr/bin/python3
+   ~~~
+
+   該当事象は2019/03時点は発生しないが、2019/07時点で発生なので、Windowの更新が原因かもしれない。
+   (Windows10 OSビルド18362.239、python 3.7.4、django 2.2.3 発生確認)
 
 ## 練習用サイト作成 ##
 
 ### 機能定義 ###
 
-1. メモ
+1. メモ帳
+
+   1. タイトル、本文を登録できること。(ここの登録は新規、更新、削除の意味)
+
+   1. 本文の文字の色やフォントを指定できること。
+
+   1. タイトルの一覧表示できること
+
+      1. タイトル順、更新時間順で並べる
+
+      1. 行をクリックすると、詳細を表示
 
 1. 読書リスト
+
+   1. 書籍の情報(JANコード、名称)を登録する
+
+   1. 表示、非表示を設定
+
+   1. 購入日、読破日を設定
+
+   1. 読書感想記載(メモ帳機能)
 
 ### 高可用性設計 ###
 
 1. バックアップとリカバリ
+
+   1. 差分増分バックアップ(毎日)
+
+   1. バックアップセットに適用(日曜日)
 
 1. クラスターとロードバランシング
 
@@ -181,7 +239,7 @@
 
 1. 高可用性試験
 
-# 情報 #
+## 情報 ##
 
 ~~~cmd
 # インストール
@@ -225,10 +283,112 @@ Password (again): 123456
 Superuser created successfully.
 ~~~
 
-## その他 ##
+## メモ ##
 
-VsCodeでDjangoチュートリアルのエラー
-**Class 'Question' has no 'objects' memberpylint(no-member)**
+1. リクエスト プロセス フロー
+
+   Request ->  RequsetMiddleware(urls.py) -> View(views.py) -> Model(models.py) -> DB(settings.py) -> Model -> View -> Response
+
+1. URL(urls.py)
+
+   ~~~python
+   path(route,view,kwargs,name)
+   # route:  https://www.example.com/myapp/?page=3 の場合、myapp/
+   #   '<int：name_key>/' のように、name_keyでurlの一部をパラメータとして取得可能(htmlテンプレートの{%url%}で使用)
+   # view: 呼び出すView関数設定
+   #   views.fucntion_name で views.py に定義したfucntion_name関数設定
+   # kwargs: TODO 後で調べる
+   # name: TODO 後で調べる
+   ~~~
+
+1. View(views.py)
+
+   view関数定義とhtml定義[引用元](https://docs.djangoproject.com/ja/2.2/intro/tutorial03/)
+
+   ~~~python
+   from django.http import HttpResponse
+   from django.template import loader
+   from .models import Question
+   def index(request):
+       latest_question_list = Question.objects.order_by('-pub_date')[:5]
+       template = loader.get_template('polls/index.html')
+       context = {
+           'latest_question_list': latest_question_list,
+           }
+       return HttpResponse(template.render(context, request))
+   def vote(request, question_id):
+       question = get_object_or_404(Question, pk=question_id)
+       try:
+           selected_choice = question.choice_set.get(pk=request.POST['choice'])
+       except (KeyError, Choice.DoesNotExist):
+           return render(request, 'polls/detail.html', {
+               'question': question,
+               'error_message': "You didn't select a choice.",
+           })
+       else:
+           selected_choice.votes += 1
+           selected_choice.save()
+           return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+   ~~~
+
+   ~~~html
+   {% if latest_question_list %}
+       <ul>
+       {% for question in latest_question_list %}
+           <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+       {% endfor %}
+       </ul>
+   {% else %}
+       <p>No polls are available.</p>
+   {% endif %}
+   ~~~
+
+   ~~~html
+   <h1>{{ question.question_text }}</h1>
+   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+   <form action="{% url 'polls:vote' question.id %}" method="post">
+   {% csrf_token %}
+   {% for choice in question.choice_set.all %}
+       <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+       <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+   {% endfor %}
+   <input type="submit" value="Vote">
+   </form>
+   ~~~
+
+   ~~~python
+   render(request, template_name, context=None, content_type=None, status=None, using=None)
+   # HttpResponse
+   get_object_or_404(klass, *args, **kwargs)
+   # modelobject
+   ~~~
+
+1. Model(models.py)
+
+   ~~~python
+   class ModelName(models.Model):
+      modelfield = models.type(constraint)
+   # 一般的なエンティティのイメージ
+   makemigrations
+   # 0001_initial.py にsql文生成できる。
+   ~~~
+
+1. DB(settings.py)
+
+   ~~~python
+   DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.sqlite3',
+           'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+       }
+   }
+   # ENGINE: 'django.db.backends.sqlite3','django.db.backends.postgresql','django.db.backends.mysql','django.db.backends.oracle'
+   # NAME: database name
+   ~~~
+
+1. VsCodeでDjangoチュートリアルのエラー
+
+   **Class 'Question' has no 'objects' memberpylint(no-member)**
 
    ~~~cmd
    pip install pylint-django
