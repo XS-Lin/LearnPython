@@ -40,3 +40,4 @@ class BookNote(models.Model):
 
     def __str__(self):
         return self.id
+

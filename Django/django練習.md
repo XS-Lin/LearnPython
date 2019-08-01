@@ -12,10 +12,18 @@
 
 ## 練習環境構成 ##
 
-* python3
-* postgresql
-* django
-* nginx
+* front
+  * bootstrap 4.3.1
+  * jquary 3.4.1
+* middleware
+  * nginx 1.17.1
+  * python3 3.7.4
+    * uwsgi 2.0.18
+    * django 2.2.3
+    * django-richtextfield 1.4.0
+    * psycopg2 2.8.3
+* db
+  * postgresql 11.4
 
 ## 環境構築 ##
 
@@ -115,9 +123,7 @@
    ~~~sh
    # Option
    pip3 install django-richtextfield
-   pip3 install psycopg2
-   pip3 install django-crispy-forms # TODO
-   pip3 install django-filter # TODO
+   pip3 install psycopg2-binary
    ~~~
 
 1. uwsgiインストール
@@ -264,50 +270,6 @@
 
 1. 高可用性試験
 
-## 情報 ##
-
-~~~cmd
-# インストール
-pip install django
-
-# バージョン
-python -m django --version
-
-# 試験用サイト
-# {python_home}\Python37\Lib\site-packages\django\bin\django-admin.py
-django-admin.py startproject mysite
-
-# 起動
-manage.py runserver
-manage.py runserver <port>
-manage.py runserver <ip>:<port>
-
-# runserver の自動リロード:ソース変更後再起動不要
-
-# App作成
-manage.py startapp polls
-
-# データベース作成(SQLLITE)
-manage.py migrate
-
-# モデル変更
-manage.py makemigrations polls
-
-# テーブル作成用SQL生成
-manage.py sqlmigrate polls 0001
-
-# データベース作成(SQLLITE)
-manage.py migrate
-
-# ログインできるユーザーを作成(練習用)
-manage.py createsuperuser
-Username: admin
-Email address: admin@example.com
-Password: 123456
-Password (again): 123456
-Superuser created successfully.
-~~~
-
 ## メモ ##
 
 1. リクエスト プロセス フロー
@@ -433,3 +395,11 @@ Superuser created successfully.
    #TIME_ZONE = 'UTC'
    TIME_ZONE = 'Asia/Tokyo'
    ~~~
+
+1. Bootstrap v4.3.1、jQuery 3.4.1
+
+   開発段階は調査しやすいように開発版使用
+
+1. djangoのMVC
+
+   **一般的なMVCのViewはdjangoでtemlate、一般的なMVCのControllerはdjangoでviewと呼ぶ**

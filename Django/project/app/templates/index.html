@@ -1,5 +1,10 @@
+{% extends "./_base.html" %}
+{% block content %}
+
 {% if message %}
     <label>{{message}}</label>
 {% else %}
     <p>Failed.</p>
 {% endif %}
+
+{% endblock %}
