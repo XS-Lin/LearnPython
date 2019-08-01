@@ -422,3 +422,14 @@ Superuser created successfully.
         "--load-plugins=pylint_django"
    ],
    ~~~
+
+1. 言語とタイムゾーンの設定
+
+   ネットで「LANGUAGE_CODE = 'ja_JP'」という情報もあるが、「translation.E001」のエラーになる。
+
+   ~~~python
+   #LANGUAGE_CODE = 'en-us'
+   LANGUAGE_CODE = 'ja'
+   #TIME_ZONE = 'UTC'
+   TIME_ZONE = 'Asia/Tokyo'
+   ~~~

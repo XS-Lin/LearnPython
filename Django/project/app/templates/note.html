@@ -1,0 +1,9 @@
+<h1>{{ note.title }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'app:update_note' note.id %}" method="post">
+{% csrf_token %}
+<input type="text" value="{{ note.choice_text }}">
+<input type="submit" value="Confirm">
+</form>
