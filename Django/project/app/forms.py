@@ -10,6 +10,7 @@ class NoteForm(forms.ModelForm):
             'title':forms.TextInput(),
             'content': forms.Textarea(),
         }
+
     def clean_title(self):
         data = self.cleaned_data['title']
         if "a" in data:

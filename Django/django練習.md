@@ -403,3 +403,94 @@
 1. djangoのMVC
 
    **一般的なMVCのViewはdjangoでtemlate、一般的なMVCのControllerはdjangoでviewと呼ぶ**
+
+1. djangoのFormView,CreateView,UpdateView,DeleteView
+
+   ドキュメント[Generic editing ビュー](https://docs.djangoproject.com/ja/2.2/ref/class-based-views/generic-editing/)
+
+   1. HttpRequst処理の流れ(CreateViewのPOST処理)
+
+      1. View.dispatch
+      1. BaseCreateView.post
+      1. ProcessFormView.post
+      1. ProcessFormView.form_valid (チェックOKとする)
+      1. ModelFormMixin.form_valid (OBJECT保存)
+      1. FormMixin.form_valid
+      1. HttpResponseRedirect
+      1. HttpResponseRedirectBase
+      1. HttpResponse
+
+   1. HttpRequst処理の流れ(DetailViewのGET処理)
+
+      1. View.dispatch
+      1. BaseDetailView.get  (SingleObjectMixin.get_object)
+      1. TemplateResponseMixin.render_to_response
+      1. TemplateResponse
+      1. SimpleTemplateResponse
+      1. HttpResponse
+
+   1. HttpRequst処理の流れ(UpdatelViewのGET処理)
+
+      1. View.dispatch
+      1. BaseUpdateView.get
+      1. ProcessFormView.get
+      1. ProcessFormView.get
+      1. TemplateResponseMixin.render_to_response
+      1. TemplateResponse
+      1. SimpleTemplateResponse
+      1. HttpResponse
+
+   1. HttpRequst処理の流れ(UpdatelViewのPOST処理)
+
+      1. View.dispatch
+      1. BaseUpdateView.post
+      1. ProcessFormView.post
+      1. ProcessFormView.form_valid (チェックOKとする)
+      1. ModelFormMixin.form_valid
+      1. FormMixin.form_valid
+      1. HttpResponseRedirect
+      1. HttpResponseRedirectBase
+      1. HttpResponse
+
+   1. HttpRequst処理の流れ(FormViewのPOST処理)
+
+      1. View.dispatch
+      1. ProcessFormView.post
+      1. ProcessFormView.form_valid (チェックOKとする)
+      1. FormMixin.form_valid
+      1. HttpResponseRedirect
+      1. HttpResponseRedirectBase
+      1. HttpResponse
+
+1. djangoのtemplate
+
+   1. x 
+
+1. djangoの起動流れ(py manager.py runserver)
+
+   1. ManagementUtility.execute
+   1. Command (Python37\Lib\site-packages\django\core\management\commands\runserver.py)
+   1. BaseCommand.run_from_argv
+   1. Command.execute
+   1. BaseCommand.execute
+   1. Command.handle
+   1. Command.run (autoreloaderを使用しないとする)
+   1. Command.inner_run
+   1. run (Python37\Lib\site-packages\django\core\servers\basehttp.py)
+      1. Command.get_handler (runのパラメータであれるhandler,requestオブジェクト作成元)
+      1. get_internal_wsgi_application (Python37\Lib\site-packages\django\core\servers\basehttp.py)
+      1. import_string (python37\lib\site-packages\django\utils\module_loading.py)
+      1. WSGI_APPLICATION=project.wsgi.application (project/settings.py)
+      1. get_wsgi_application (Python37\Lib\site-packages\django\core\wsgi.py)
+      1. WSGIHandler.__init__ (view,templateロード)
+      1. WSGIHandler.__call__ (request,responsオブジェクト作成)
+   1. HTTPServer.serve_forever (pythonの標準クラス、HTTP通信関連)
+
+1. requestオブジェクト作成
+
+   1. 標準的な手法でスキップ
+
+1. responseオブジェクト作成
+
+   1. BaseHandler.get_response
+   1. BaseHandler._middleware_chain

@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
+from django.urls import reverse_lazy
 
 from .models import Note,BookInfo,BookNote
 from .forms import NoteForm
@@ -14,15 +15,45 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         return "Test success!"
 
-class NoteView(generic.FormView):
+class NoteFormView(generic.FormView):
     model = Note
-    template_name = 'note_detail.html'
+    template_name = 'note_form.html'
     form_class = NoteForm
     success_url = 'note/'
     def form_valid(self, form):
-        form.model.save()
-        success_url += form.model.id
+        note = Note(title=form.cleaned_data['title'],content=form.cleaned_data['content'])
+        note.save()
+        self.success_url += str(note.id)
         return super().form_valid(form)
+
+class NoteCreate(generic.CreateView):
+    model = Note
+    form_class = NoteForm
+    template_name = 'note_form.html'
+    
+    def form_valid(self, form):
+        self.success_url += reverse_lazy('note_r/',args=(self.object.id ))
+        return super().form_valid(form)
+
+class NoteDetail(generic.DetailView):
+    model = Note
+    form_class = NoteForm
+    template_name = 'note_form.html'
+    context_object_name = 'form'
+
+class NoteUpdate(generic.UpdateView):
+    model = Note
+    form_class = NoteForm
+    template_name = 'note_form.html'
+    def form_valid(self, form):
+        self.success_url = reverse_lazy('note_r/' + self.object.id)
+        return super().form_valid(form)
+
+class NoteDelete(generic.DeleteView):
+    model = Note
+    form_class = NoteForm
+    template_name = 'note_form.html'
+
     
 class BookNoteView(generic.DetailView):
     template_name = 'note_detail.html'
