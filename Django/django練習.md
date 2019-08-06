@@ -462,13 +462,13 @@
       1. HttpResponseRedirectBase
       1. HttpResponse
 
-1. djangoのtemplate
-
-   1. x 
-
 1. djangoの起動流れ(py manager.py runserver)
 
    1. ManagementUtility.execute
+      1. django.setup
+      1. apps.populate (Python37\Lib\site-packages\django\apps\registry.py)
+      1. AppConfig.create (Python37\Lib\site-packages\django\apps\config.py)
+      1. settings.py の INSTALLED_APPS に記述のモジュールを動的ロード
    1. Command (Python37\Lib\site-packages\django\core\management\commands\runserver.py)
    1. BaseCommand.run_from_argv
    1. Command.execute
@@ -482,15 +482,117 @@
       1. import_string (python37\lib\site-packages\django\utils\module_loading.py)
       1. WSGI_APPLICATION=project.wsgi.application (project/settings.py)
       1. get_wsgi_application (Python37\Lib\site-packages\django\core\wsgi.py)
-      1. WSGIHandler.__init__ (view,templateロード)
-      1. WSGIHandler.__call__ (request,responsオブジェクト作成)
+      1. WSGIHandler.__init__ (middlewareロード)
+         1. BaseHandler.load_middleware (Exceptionなしとする)
+            1. _get_response (Python37\Lib\site-packages\django\core\handlers\base.py)
+            1. ミドルウェアインスタンス作成(プロジェクトのsettingsのMIDDLEWAREで定義、実行順は定義順の逆)
+            1. _view_middlewareにview関数を登録
+         1. BaseHandler._get_response
+         1. middleware_method (戻り値がなければ次を実行)
+            1. _view_middlewareに登録されているview関数を実行(パラメータ:request, callback, callback_args, callback_kwargs)
+         1. make_view_atomic (view関数を戻すして、次はrequestをパラメータとしてview関数を実行、view関数の戻り値はresponse)
+      1. WSGIHandler.__call__
+         1. WSGIRequest (requestオブジェクト)
+         1. BaseHandler.get_response
+         1. _middleware_chain (handler作成段階でsettings.MIDDLEWAREに記述したもの)
    1. HTTPServer.serve_forever (pythonの標準クラス、HTTP通信関連)
 
-1. requestオブジェクト作成
+1. ミドルウェア
 
-   1. 標準的な手法でスキップ
+   1. django.contrib.messages.middleware.MessageMiddleware
+      1. MiddlewareMixin.__call__ (BaseHandler.load_middlewareで実行 Python37\Lib\site-packages\django\core\handlers\base.py)
+      1. MessageMiddleware.process_request
+         1. django.contrib.messages.storage.default_storage
+         1. TODO:settings.MESSAGE_STORAGEが未設定の場合はどうなる？
+      1. MessageMiddleware.process_response
+   1. django.contrib.auth.middleware.AuthenticationMiddleware
+      1. MiddlewareMixin.__call__ (BaseHandler.load_middlewareで実行 Python37\Lib\site-packages\django\core\handlers\base.py)
+      1. AuthenticationMiddleware.process_request
+      1. AuthenticationMiddleware.process_response
+   1. django.middleware.csrf.CsrfViewMiddleware
+      1. MiddlewareMixin.__call__ (BaseHandler.load_middlewareで実行 Python37\Lib\site-packages\django\core\handlers\base.py)
+      1. CsrfViewMiddleware.process_request
+      1. CsrfViewMiddleware.process_response
+   1. django.middleware.common.CommonMiddleware
+      1. MiddlewareMixin.__call__ (BaseHandler.load_middlewareで実行 Python37\Lib\site-packages\django\core\handlers\base.py)
+      1. CommonMiddleware.process_request
+      1. CommonMiddleware.process_response
+   1. django.contrib.sessions.middleware.SessionMiddleware
+      1. MiddlewareMixin.__call__ (BaseHandler.load_middlewareで実行 Python37\Lib\site-packages\django\core\handlers\base.py)
+      1. SessionMiddleware.process_request
+      1. SessionMiddleware.process_response
 
-1. responseオブジェクト作成
+1. urls.py
+   1. RoutePattern
+   1. URLPattern
 
-   1. BaseHandler.get_response
-   1. BaseHandler._middleware_chain
+      ~~~python
+      # プロジェクトのurls.py
+      urlpatterns = [
+         path('', views.IndexView.as_view(), name='index'),
+      ]
+      ~~~
+
+      ~~~python
+      # django\urls\conf.py
+      def _path(route, view, kwargs=None, name=None, Pattern=None):
+          if isinstance(view, (list, tuple)):
+              # For include(...) processing.
+              pattern = Pattern(route, is_endpoint=False)
+              urlconf_module, app_name, namespace = view
+              return URLResolver(
+                  pattern,
+                  urlconf_module,
+                  kwargs,
+                  app_name=app_name,
+                  namespace=namespace,
+              )
+          elif callable(view):
+              pattern = Pattern(route, name=name, is_endpoint=True)
+              return URLPattern(pattern, view, kwargs, name)
+          else:
+              raise TypeError('view must be a callable or a list/tuple in the case of include().')
+      path = partial(_path, Pattern=RoutePattern)
+      ~~~
+
+1. View (Python37\Lib\site-packages\django\views\generic\base.py)
+   1. as_view
+      1. view関数を戻す
+      1. view関数はdispatchを呼び出す
+      1. dispatchはViewインスタンスのget、postメソッドを呼び出す
+
+       ~~~python
+       @classonlymethod
+       def as_view(cls, **initkwargs):
+           """Main entry point for a request-response process."""
+           for key in initkwargs:
+               if key in cls.http_method_names:
+                   raise TypeError("You tried to pass in the %s method name as a "
+                                   "keyword argument to %s(). Don't do that."
+                                   % (key, cls.__name__))
+               if not hasattr(cls, key):
+                   raise TypeError("%s() received an invalid keyword %r. as_view "
+                                   "only accepts arguments that are already "
+                                   "attributes of the class." % (cls.__name__, key))
+
+           def view(request, *args, **kwargs):
+               self = cls(**initkwargs)
+               if hasattr(self, 'get') and not hasattr(self, 'head'):
+                   self.head = self.get
+               self.setup(request, *args, **kwargs)
+               if not hasattr(self, 'request'):
+                   raise AttributeError(
+                       "%s instance has no 'request' attribute. Did you override "
+                       "setup() and forget to call super()?" % cls.__name__
+                   )
+               return self.dispatch(request, *args, **kwargs)
+           view.view_class = cls
+           view.view_initkwargs = initkwargs
+
+           # take name and docstring from class
+           update_wrapper(view, cls, updated=())
+           # and possible attributes set by decorators
+           # like csrf_exempt from dispatch
+           update_wrapper(view, cls.dispatch, assigned=())
+           return view
+       ~~~
