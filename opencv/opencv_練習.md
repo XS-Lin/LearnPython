@@ -83,3 +83,12 @@ VS Code使用の時に、エラー「**pylint(no-member):Module 'cv2' has no 'im
 ## チュートリアル ##
 
 参考[OpenCV-Pythonチュートリアル](http://labs.eecs.tottori-u.ac.jp/sd/Member/oyamada/OpenCV/html/py_tutorials/py_tutorials.html)
+
+TODO:以下を理解してみる
+[物体追跡](http://labs.eecs.tottori-u.ac.jp/sd/Member/oyamada/OpenCV/html/py_tutorials/py_imgproc/py_colorspaces/py_colorspaces.html#id3)
+
+[GetDesktopAsVideo](https://stackoverflow.com/questions/34466993/opencv-desktop-capture)
+[Capture video data from screen in Python](https://stackoverflow.com/questions/35097837/capture-video-data-from-screen-in-python/43560140)
+[Pythonで簡易デスクトップキャプチャ](https://scienceboy.jp/88io/2018/12/python-quick-capture/)
+[Python/OpenCVでデスクトップキャプチャ - 画像処理速報](http://opencv.blog.jp/python/desktop_capture)
+
