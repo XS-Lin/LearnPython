@@ -5,8 +5,8 @@ from django.views import generic
 from django.contrib import messages
 from django.urls import reverse_lazy
 
-from .models import Note,BookInfo,BookNote
-from .forms import NoteForm
+from .models import Note,BookInfo,BookNote,BlogContent,Category,Tag
+from .forms import NoteForm,BlogContentForm
 
 class IndexView(generic.ListView):
     template_name = 'index.html'
@@ -54,7 +54,6 @@ class NoteDelete(generic.DeleteView):
     form_class = NoteForm
     template_name = 'note_form.html'
 
-    
 class BookNoteView(generic.DetailView):
     template_name = 'note_detail.html'
     context_object_name = 'book_note'
@@ -69,4 +68,14 @@ def AddNote(request, book_note_id):
 def AddBookNote(request, book_note_id):
 
     return
+class BlogCreateView(generic.CreateView):
+    template_name = 'blog.html'
+    form_class = BlogContentForm
 
+class BlogUpdateView(generic.UpdateView):
+    template_name = 'blog.html'
+    form_class = BlogContentForm
+
+class BlogDetailView(generic.DetailView):
+    template_name = 'blog.html'
+    form_class = BlogContentForm

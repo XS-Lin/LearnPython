@@ -10,4 +10,7 @@ urlpatterns = [
     path('note_r/<int:pk>', views.NoteDetail.as_view(), name='display_note'),
     path('note_u/<int:pk>', views.NoteUpdate.as_view(), name='update_note'),
     path('note_d/<int:pk>', views.NoteDelete.as_view(), name='deleter_note'),
+    path('blog', views.BlogDetailView.as_view(), name='blog'),
+    path('blog_u', views.BlogUpdateView.as_view(), name='blogu'),
+    path('blog_c', views.BlogCreateView.as_view(), name='blogc'),
 ]
