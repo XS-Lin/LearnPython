@@ -92,3 +92,15 @@ TODO:以下を理解してみる
 [Pythonで簡易デスクトップキャプチャ](https://scienceboy.jp/88io/2018/12/python-quick-capture/)
 [Python/OpenCVでデスクトップキャプチャ - 画像処理速報](http://opencv.blog.jp/python/desktop_capture)
 
+[TensorFlow入門](https://www.atmarkit.co.jp/ait/subtop/features/di/introtensorflow_index.html)
+
+## 練習1 ##
+
+1. ゲーム「DOA vv」の自動プレーツール
+
+   1. 機能
+
+      1. Windowモードのゲームの画像を取得する。
+      1. ゲームの画像をもとに、次の選択肢を決める。
+
+
