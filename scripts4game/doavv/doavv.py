@@ -3,11 +3,11 @@ import numpy as np
 import os
 import cv2
 import pyautogui
-import sys
 import time
 import datetime
 import PIL
 import json
+from matplotlib import pyplot as plt
 
 # 準備
 # 1.検知対象画像準備
@@ -25,18 +25,20 @@ akaze = cv2.AKAZE_create()
 bf = cv2.BFMatcher()
 temp_dir = r'D:\Test'
 button_pos = {
-    'btn_menu_main_Fes':(),
-    'btn_menu_main_Girls':(),
+    'btn_menu_main_Fes':(83,286),
+    'btn_menu_main_Girls':(83,432),
 
-    'btn_menu_lv1_Suggestions':(),
-    'btn_menu_lv1_Suggestions_new':(),
-    'btn_menu_lv1_Suggestions_pre':(),
-    'btn_menu_lv1_Suggestions_pre_1':(),
+    'btn_menu_lv1_Suggestions':(1377,216),
+    'btn_menu_lv1_Suggestions_new':(1622,649),
+    'btn_menu_lv1_Suggestions_pre':(1622,754),
+    'btn_menu_lv1_Suggestions_pre_1':(1622,649),
 
-    'btn_fes_Start':(),
-    'btn_fes_SkipAll':(),
+    'btn_fes_Start':(1480,1000),
+    'btn_fes_SkipAll':(1500,1000),
 
-    'btn_confirm':(),
+    'btn_confirm':(1075,870),
+
+    'add_active_point':(882,700),
 }
 def prepare(img_dir):
     if(os.path.isdir(img_dir)):
@@ -45,11 +47,10 @@ def prepare(img_dir):
             if len(data) == 0 or not any(x for x in data if x['name'] == file):
                 img = cv2.imread(os.path.join(img_dir, file), 1)
                 kp_img, des_img = akaze.detectAndCompute(img, None)
-                data.append({'name':file,'data':img,'kp_img':kp_img,'des_img':des_img})
+                data.append({'name':file,'data':img,'kp_img':kp_img,'des_img':des_img,'path':os.path.join(img_dir, file)})
     return
 
 def pil2cv(image):
-    ''' PIL型 -> OpenCV型 '''
     new_image = np.array(image,dtype=np.uint8)
     if new_image.ndim == 2:  # モノクロ
         pass
@@ -60,7 +61,6 @@ def pil2cv(image):
     return new_image
 
 def cv2pil(image):
-    ''' OpenCV型 -> PIL型 '''
     new_image = image.copy()
     if new_image.ndim == 2:  # モノクロ
         pass
@@ -111,6 +111,20 @@ def wait_until(condition,params=None,timeout=60):
             t = t + 1
     return t < timeout
 
+def add_active_point(flag=True):
+    if flag:
+        active_point_confirm = next(x for x in data if x['name'] == 'active_point_confirm.JPG')
+        if active_point_confirm and img_contains_cv(active_point_confirm):
+            x,y = button_pos['add_active_point']
+            pyautogui.moveTo(x, y, 2, pyautogui.easeInQuad)
+            pyautogui.click()
+            time.sleep(1)
+            x,y = button_pos['btn_confirm']
+            pyautogui.moveTo(x, y, 2, pyautogui.easeInQuad)
+            pyautogui.click()
+            time.sleep(1)
+    return
+
 def do_lession():
     return
 def do_work():
@@ -118,43 +132,65 @@ def do_work():
 def do_fes_daily():
     return
 def do_fes_pre():
-    menu = next(x for x in data if x['name'] == 'menu.JPG')
-    if not (menu and img_contains_cv(menu)):
-        #cv2.imshow('test',menu['data'])
-        #cv2.waitKey(0)
-        #cv2.destroyAllWindows()
-        #pass
-        return
-    
-    location = pyautogui.locateOnScreen(r'D:\Site\MyScript\python_test\scripts4game\doavv\input\fes_level1_pre.JPG',confidence=0.550)
-    if location is None:
-        return
-    pyautogui.moveTo(location.left + 400,location.top, 2, pyautogui.easeInQuad)
-    pyautogui.click()
-    time.sleep(3)
+#    menu = next(x for x in data if x['name'] == 'menu.JPG')
+#    if menu and img_contains_cv(menu):       
+#        x,y = button_pos['btn_menu_main_Fes']
+#        pyautogui.moveTo(x, y, 2, pyautogui.easeInQuad)
+#        pyautogui.click()
+#        time.sleep(3)
 
-    #fes_start = next(x for x in data if x['name'] == 'fes_start.JPG')
-    #if not (fes_start and img_contains_cv(fes_start)):
-    #    return
-    location1 = pyautogui.locateOnScreen(r'D:\Site\MyScript\python_test\scripts4game\doavv\input\fes_start.JPG',confidence=0.550)
-    if location1 is None:
-        return
-    pyautogui.moveTo(location1.left + location1.width//2 + 100 ,location1.top + location1.height // 2, 2, pyautogui.easeInQuad)
-    pyautogui.click()
-    time.sleep(20)
-    
-    location2 = pyautogui.locateOnScreen(r'D:\Site\MyScript\python_test\scripts4game\doavv\input\all_skip.JPG',confidence=0.550)
-    if location2 is None:
+    fes_level1_pre = next(x for x in data if x['name'] == 'fes_level1_pre.JPG')
+    # "akaze.detectAndCompute" dose not work
+    location = pyautogui.locateOnScreen(fes_level1_pre['path'],confidence=0.550) 
+    if location:
+        x,y = button_pos['btn_menu_lv1_Suggestions_pre']
+        pyautogui.moveTo(x, y, 2, pyautogui.easeInQuad)
+        pyautogui.click()
+        time.sleep(1)
+
+    fes_start = next(x for x in data if x['name'] == 'fes_start.JPG')
+    if fes_start and img_contains_cv(fes_start):
+        x,y = button_pos['btn_fes_Start']      
+        pyautogui.moveTo(x, y, 2, pyautogui.easeInQuad)
+        pyautogui.click()
+        time.sleep(15)
+        pyautogui.click()
+        time.sleep(3)
+        pyautogui.click()
+        time.sleep(1)
+        pyautogui.click()
+        time.sleep(1)
+
+    btn_fes_SkipAll = next(x for x in data if x['name'] == 'all_skip.JPG')
+    if btn_fes_SkipAll and img_contains_cv(btn_fes_SkipAll):
+        x,y = button_pos['btn_fes_SkipAll']      
+        pyautogui.moveTo(x, y, 1, pyautogui.easeInQuad)
+        pyautogui.click()
+        time.sleep(1)
+
+    btn_confirm = next(x for x in data if x['name'] == 'btn_confirm.JPG')
+    if btn_confirm and img_contains_cv(btn_confirm):
+        x,y = button_pos['btn_confirm']      
+        pyautogui.moveTo(x, y, 1, pyautogui.easeInQuad)
+        pyautogui.click()
+        time.sleep(5)
+        pyautogui.click()
+        time.sleep(3)
+        pyautogui.click()
+        time.sleep(2)
+        pyautogui.click()
+        time.sleep(2)
+        pyautogui.click()
+        time.sleep(2)
+        pyautogui.click()
+        time.sleep(2)
+        pyautogui.click()
+        time.sleep(2)
+        pyautogui.moveTo(x+100, y+100, 1, pyautogui.easeInQuad)
+        pyautogui.click()
+        time.sleep(2)
+        pyautogui.click()
         time.sleep(10)
-        location2 = pyautogui.locateOnScreen(r'D:\Site\MyScript\python_test\scripts4game\doavv\input\all_skip.JPG',confidence=0.550)
-        if location2 is None:
-            return
-    pyautogui.moveTo(location2.left + location2.width // 2,location2.top + location2.height // 2, 2, pyautogui.easeInQuad)
-    pyautogui.click()
-    time.sleep(1)
-    pyautogui.click()
-    time.sleep(20)
-
 
     return
 
@@ -162,22 +198,13 @@ def do_fes_new():
     return
 
 def main_process():
-    #time.sleep(30)
+    time.sleep(5)
     prepare(r'D:\Site\MyScript\python_test\scripts4game\doavv\input')
     try:
         while True:
-            #save_path = os.path.join(input_dir,'file' + datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '.jpg')
-            #curr_img = pyautogui.screenshot(save_path)
             time.sleep(3)
-         
+            #add_active_point()
             do_fes_pre()
-            #kp_curr_img, des_curr_img = akaze.detectAndCompute(curr_img, None)
-            # matches = bf.knnMatch(des_temp, des_samp, k=2)
-
-            #cv2.imshow('test',pil2cv(curr_img))
-            #cv2.waitKey(0)
-            
-            
     except KeyboardInterrupt:
         print('Stopped by user command.')
         return
@@ -207,8 +234,8 @@ def test():
 
 def test1():
     prepare(r'D:\Site\MyScript\python_test\scripts4game\doavv\input')
-    menu = next(x for x in data if x['name'] == 'menu.JPG')
-    img2 = cv2.imread(r'D:\Site\MyScript\python_test\scripts4game\doavv\image\file20190909211806.jpg',1)
+    menu = next(x for x in data if x['name'] == 'btn_confirm.JPG')
+    img2 = cv2.imread(r'D:\Site\MyScript\python_test\scripts4game\doavv\image\file20190909202116.jpg',1)
     kp_2, des_2 = akaze.detectAndCompute(img2, None)
     matches = bf.knnMatch(menu['des_img'], des_2, k=2)
     good = []
@@ -232,3 +259,24 @@ def test2():
         print(location)
     return
 #test2()
+
+def test3():
+    img_dir = r'D:\Site\MyScript\python_test\scripts4game\doavv\image\file20190910210035.jpg'
+    img = cv2.imread(img_dir,1)
+    img1 = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+    plt.imshow(img1)
+    plt.show()
+    return
+#test3()
+
+def test4():
+    time.sleep(5)
+    try:
+        while True:
+            save_path = os.path.join(r'D:\Site\MyScript\python_test\scripts4game\doavv\image','file' + datetime.datetime.now().strftime('%Y%m%d%H%M%S') + '.jpg')
+            pyautogui.screenshot(save_path)
+            time.sleep(3)
+    except KeyboardInterrupt:
+        print('Stopped by user command.')
+    return
+#test4()
