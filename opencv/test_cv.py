@@ -173,7 +173,7 @@ def test_feature_detection():
 
     return
 
-test_feature_detection()
+#test_feature_detection()
 
 def wait_until(condition,params=None,timeout=60):
     t = 0
@@ -189,3 +189,12 @@ def test(x):
     return x > 5
 
 #wait_until(test,6,10)
+
+def showImagePlot(img_path):
+    img = cv2.imread(img_path,1)
+    img1 = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+    plt.imshow(img1)
+    plt.xticks([]), plt.yticks([])  # to hide tick values on X and Y axis
+    plt.show()
+    return
+showImagePlot(r'C:\Users\linxu\Desktop\project\python_test\scripts4game\doavv\image\file20190909202155.jpg')

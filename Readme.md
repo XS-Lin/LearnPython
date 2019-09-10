@@ -20,6 +20,7 @@ pip install opencv-python
 pip install keyboard
 pip install tensorflow
 pip install cirq
+pip install scikit-learn
 ~~~
 
 ~~~dos
