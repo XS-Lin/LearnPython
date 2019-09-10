@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import time
 from matplotlib import pyplot as plt
 
 def base():
@@ -139,11 +140,10 @@ def test_feature_detection():
     matches = bf.knnMatch(des_temp, des_samp, k=2)
     
     # マッチング精度が高いもののみ抽出
-    ratio = 0.5
     good = []
     for m, n in matches:
-        if m.distance < ratio * n.distance:
-            good.append([m])
+        if m.distance < 0.5 * n.distance:
+            good.append(m)
     
     # マッチング結果を描画して保存
     cv2.namedWindow("Result", cv2.WINDOW_KEEPRATIO | cv2.WINDOW_NORMAL)
@@ -151,10 +151,41 @@ def test_feature_detection():
     #cv2.imshow("Result", result_img)
     # cv2.imwrite(result_path + result_name, result_img)
 
-    x = cv2.drawKeypoints(template_img,kp_temp,None,flags=cv2.DrawMatchesFlags_DRAW_RICH_KEYPOINTS)
-    cv2.imshow("Result",x)
+    src_pts = np.float32([ kp_temp[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
+    dst_pts = np.float32([ kp_samp[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
+    M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
+    matchesMask = mask.ravel().tolist()
+    h,w = template_img.shape
+    pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
+    dst = cv2.perspectiveTransform(pts,M)
+
+    sample_img = cv2.polylines(sample_img,[np.int32(dst)],True,0,5, cv2.LINE_AA)
+    draw_params = dict(matchColor = (0,255,0), # draw matches in green color
+                   singlePointColor = None,
+                   matchesMask = matchesMask, # draw only inliers
+                   flags = 2)
+    result_img = cv2.drawMatches(template_img, kp_temp, sample_img, kp_samp, good,None, **draw_params)
+    cv2.imshow("Result", result_img)
+
+    #x = cv2.drawKeypoints(template_img,kp_temp,None,flags=cv2.DrawMatchesFlags_DRAW_RICH_KEYPOINTS)
+    #cv2.imshow("Result",x)
     cv2.waitKey(0) 
 
     return
 
 test_feature_detection()
+
+def wait_until(condition,params=None,timeout=60):
+    t = 0
+    if callable(condition):
+        while t < timeout:
+            if condition(params) == True:
+                break
+            time.sleep(1)
+            t = t + 1
+    return t < timeout
+
+def test(x):
+    return x > 5
+
+#wait_until(test,6,10)

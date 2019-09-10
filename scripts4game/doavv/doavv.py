@@ -7,6 +7,7 @@ import sys
 import time
 import datetime
 import PIL
+import json
 
 # 準備
 # 1.検知対象画像準備
@@ -22,7 +23,21 @@ import PIL
 data = []
 akaze = cv2.AKAZE_create()
 bf = cv2.BFMatcher()
+temp_dir = r'D:\Test'
+button_pos = {
+    'btn_menu_main_Fes':(),
+    'btn_menu_main_Girls':(),
 
+    'btn_menu_lv1_Suggestions':(),
+    'btn_menu_lv1_Suggestions_new':(),
+    'btn_menu_lv1_Suggestions_pre':(),
+    'btn_menu_lv1_Suggestions_pre_1':(),
+
+    'btn_fes_Start':(),
+    'btn_fes_SkipAll':(),
+
+    'btn_confirm':(),
+}
 def prepare(img_dir):
     if(os.path.isdir(img_dir)):
         files = [f for f in os.listdir(img_dir) if os.path.isfile(os.path.join(img_dir, f)) and f[-4:].upper() == '.JPG']
@@ -56,6 +71,18 @@ def cv2pil(image):
     new_image = PIL.Image.fromarray(new_image)
     return new_image
 
+def save_data():
+    if len(data) > 0:
+        with open(os.path.join(temp_dir,'data.json'), 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+
+def load_data():
+    if os.path.isfile(os.path.join(temp_dir,'data.json')):
+        with open(os.path.join(temp_dir,'data.json'), 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    if data is None:
+        data = []
+
 def img_contains_cv(item):
     curr_img = pyautogui.screenshot()
     img2 = pil2cv(curr_img)
@@ -73,6 +100,16 @@ def img_contains_cv(item):
     #cv2.waitKey(0)
 
     return len(good) / len(item['kp_img']) > 0.25
+
+def wait_until(condition,params=None,timeout=60):
+    t = 0
+    if callable(condition):
+        while t < timeout:
+            if condition(params) == True:
+                break
+            time.sleep(1)
+            t = t + 1
+    return t < timeout
 
 def do_lession():
     return
@@ -112,7 +149,7 @@ def do_fes_pre():
         location2 = pyautogui.locateOnScreen(r'D:\Site\MyScript\python_test\scripts4game\doavv\input\all_skip.JPG',confidence=0.550)
         if location2 is None:
             return
-    pyautogui.moveTo(location2.left + location2.width//2 ,location2.top + location2.height // 2, 2, pyautogui.easeInQuad)
+    pyautogui.moveTo(location2.left + location2.width // 2,location2.top + location2.height // 2, 2, pyautogui.easeInQuad)
     pyautogui.click()
     time.sleep(1)
     pyautogui.click()
@@ -145,7 +182,7 @@ def main_process():
         print('Stopped by user command.')
         return
 
-main_process()
+#main_process()
 
 def test():
     img1 = cv2.imread(r'D:\Site\MyScript\python_test\scripts4game\doavv\input\fes_level1_pre.JPG',1)
