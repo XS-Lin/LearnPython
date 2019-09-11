@@ -5,7 +5,7 @@
 * Windows10(C++/VS2019)
   * opencv-4.1.1-vc14_vc15.exe
   * 展開先 D:\opencv4_1_1\
-  * 環境変数追加
+  * 環境変数追加(オプション)
 
     ~~~powershell
     [System.Environment]::SetEnvironmentVariable("PATH", "D:\opencv4_1_1\opencv\;" + [Environment]::GetEnvironmentVariable('PATH', 'User'), "User")
@@ -40,6 +40,14 @@
              waitKey(0);
          }
          ~~~
+
+      1. 出力先※デフォルト
+
+          ~~~powershell
+          # $(SolutionDir)$(Platform)\$(Configuration)\
+          D:\MyProject\OpencvTest\x64\Debug
+          D:\MyProject\OpencvTest\x64\Release
+          ~~~
 
 * Windows10(Python3.7)
 
@@ -94,11 +102,20 @@ TODO:以下を理解してみる
 
 [TensorFlow入門](https://www.atmarkit.co.jp/ait/subtop/features/di/introtensorflow_index.html)
 
-## 練習1 ##
+## 練習 ##
 
-1. ゲーム「DOA vv」の自動プレーツール
+Pythonの練習は[OpenCV-Pythonチュートリアル](http://labs.eecs.tottori-u.ac.jp/sd/Member/oyamada/OpenCV/html/py_tutorials/py_tutorials.html)を参照しています。
 
-   1. 機能
+C++の練習は[詳解 opencv 3](https://www.oreilly.co.jp/books/9784873118376/)を参照しています。
 
-      1. Windowモードのゲームの画像を取得する。
-      1. ゲームの画像をもとに、次の選択肢を決める。
+* Python
+
+   ~~~python
+
+   ~~~
+
+* C++
+  
+   ~~~cpp
+
+   ~~~
