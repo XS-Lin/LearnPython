@@ -1,7 +1,7 @@
 # Install Lib #
 
-~~~dos
-# python 3.7.4
+~~~powershell
+# python 3.7.6
 python -m pip install --upgrade pip
 pip install numpy
 pip install pandas
@@ -17,20 +17,20 @@ pip install seaborn
 pip install python-owasp-zap-v2.4
 pip install django
 pip install opencv-python
-pip install keyboard
-pip install tensorflow
-pip install cirq
+# pip install tensorflow
+pip install tensorflow-gpu
 pip install scikit-learn
+pip install jupyterlab
+pip install notebook
 ~~~
 
-~~~dos
-# python 3.7.4
+~~~powershell
+# python 3.7.6
 pip list --outdated
 pip install --upgrade <package_name>
 ~~~
 
 ~~~powershell
 # Upgrade all installed library by powshell for windows. (Tested on windows 10)
-# Move to folder where pip is,then run the script bellow.
-foreach ($line in @(.\pip list --outdated)) { if (-not($line.StartsWith("Package") -or $line.StartsWith("----"))) { .\pip install --upgrade $line.Split(" ")[0] } }
+foreach ($line in @(pip list --outdated)) { if (-not($line.StartsWith("Package") -or $line.StartsWith("----"))) { pip install --upgrade $line.Split(" ")[0] } }
 ~~~
