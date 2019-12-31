@@ -21,12 +21,22 @@
          * タイプ:コンソール アプリ
 
       1. プロジェクト・プロパティ設定
+
+         **opencv_world411d.libはデバッグ用、opencv_world411.libはリリース用**
+
          * 構成:Debug
          * プラットフォーム:x64
          * 構成プロパティ/デバッグ/環境:PATH=D:\opencv4_1_1\build\x64\vc15\bin;%PATH%
          * 構成プロパティ/VC++ ディレクトリ/インクルード ディレクトリ:D:\opencv4_1_1\build\include
          * 構成プロパティ/VC++ ディレクトリ/ライブラリ ディレクトリ:D:\opencv4_1_1\build\x64\vc15\lib
          * 構成プロパティ/リンカー/入力/追加の依存ファイル:opencv_world411d.lib
+
+         * 構成:Release
+         * プラットフォーム:x64
+         * 構成プロパティ/デバッグ/環境:PATH=D:\opencv4_1_1\build\x64\vc15\bin;%PATH%
+         * 構成プロパティ/VC++ ディレクトリ/インクルード ディレクトリ:D:\opencv4_1_1\build\include
+         * 構成プロパティ/VC++ ディレクトリ/ライブラリ ディレクトリ:D:\opencv4_1_1\build\x64\vc15\lib
+         * 構成プロパティ/リンカー/入力/追加の依存ファイル:opencv_world411.lib
 
       1. プログラム
 

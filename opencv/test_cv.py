@@ -105,7 +105,7 @@ def ChangeColorSpace():
     # BGR <--> Gray
 
     return
-# ChangeColorSpace()
+ChangeColorSpace()
 
 def test_feature_detection():
     template_path = "D:\\Test\\"
