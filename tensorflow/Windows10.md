@@ -1,23 +1,29 @@
 # Windows10 tensorflow環境設定 #
 
-## 環境 ##
+## ローカル環境 ##
 
 1. OS
-   Window 10 Home
-   1903
+
+   * Window 10 Home 1903
 
 1. GPU
-   GeForce 1050
-   Driver 441.66
-   CUDA cuda_10.0.130_411.31_win10.exe
+
+   * GeForce 1050
+   * Driver 441.66
+   * CUDA cuda_10.0.130_411.31_win10.exe
 
 1. Python
-   Python3.7.6
+
+   * Python3.7.6
 
 1. Tensorflow
-   tensorflow2.0.0
+
+   * tensorflow2.0.0
 
 ## 設定手順 ##
+
+* [参照１：GPU support](https://www.tensorflow.org/install/gpu)
+* [参照２：Install TensorFlow with pip](https://www.tensorflow.org/install/pip?lang=python3)
 
 1. Python
 
