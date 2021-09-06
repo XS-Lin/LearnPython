@@ -1,5 +1,10 @@
 import numpy as np
+import sys,os
 import matplotlib.pylab as plt
+from dataset.mnist import load_mnist
+
+# handwritten numeral recognition
+# 手書き数字認識のゼロから実装
 
 def step_function(x):
     return np.array(x > 0,dtype=np.int)
@@ -30,7 +35,6 @@ def forward(network,x):
     z2 = sigmoid(a2)
     a3 = np.dot(z2,W3) + b3
     y = a3
-
     return y
 
 def softmax(a):
@@ -40,23 +44,11 @@ def softmax(a):
     y = exp_a / sum_exp_a
     return y
 
-a = np.array([0.3,2.9,4.0])
-y = softmax(a)
-print(y)
-print(np.sum(y))
+def test():
+    sys.path.append(os.pardir)
 
 
-
-#network = init_network()
-#x = np.array([1.0,0.5])
-#y = forward(network,x)
-#print(y)
-
-#x = np.arange(-5.0,5.0,0.1)
-#y = relu(x)
-#plt.plot(x,y)
-#plt.ylim(-0.1,10.1)
-#plt.show()
-
+if __name__ == "__main__":
+    test()
 
 
