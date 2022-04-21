@@ -1,4 +1,4 @@
-# データサイエンス勉強メモ #
+# データサイエンス勉強 #
 
 ## データサイエンス練習 ##
 
@@ -22,6 +22,8 @@ docker run -d -P --name notebook jupyter/all-spark-notebook
 
 ## 参考資料 ##
 
-[Dockerイメージの保存場所を変更する方法 docker desktop for windows](https://penguin-coffeebreak.com/archives/534)
-[docker run](http://docs.docker.jp/v19.03/engine/reference/commandline/run.html)
-[Jupyter Docker Stacks](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html)
+* [Dockerイメージの保存場所を変更する方法 docker desktop for windows](https://penguin-coffeebreak.com/archives/534)
+* [docker run](http://docs.docker.jp/v19.03/engine/reference/commandline/run.html)
+* [docker reference](https://docs.docker.com/reference/)
+* [Jupyter Docker Stacks](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html)
+* [Jupyter Docker Stacks Selecting an Image](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html)
