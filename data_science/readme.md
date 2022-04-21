@@ -8,7 +8,7 @@
 docker pull jupyter/datascience-notebook
 docker run -it --rm -p 10000:8888 -v D:/Site/MyScript/python_test/data_science/datascience-notebook:/home/jovyan/work jupyter/datascience-notebook
 # Tokenは毎回起動の時に変わため、コンソールから確認
-# http://127.0.0.1:10000/lab?token=412ca9be39eaf766798b439e511508cdc686bf3a427951d5
+# http://127.0.0.1:10000/lab?token=0b0b5de8e611de13175e7db9e7cd251df5f4b1280c0bbd60
 ~~~
 
 ## Spark練習 ##
@@ -20,10 +20,38 @@ docker pull jupyter/pyspark-notebook
 docker run -d -P --name notebook jupyter/all-spark-notebook
 ~~~
 
+## Kubernetes練習 ##
+
+### Kubernetes 環境 ###
+
+~~~powershell
+# Docker Desktop
+kubectl version
+~~~
+
+### PlantUML ###
+
+~~~powershell
+docker pull plantuml/plantuml-server
+# jettyまたはtomcat
+docker run --rm -d -p 10001:8080 plantuml/plantuml-server:jetty
+docker run --rm -d -p 10001:8080 plantuml/plantuml-server:tomcat
+~~~
+
+## その他 ##
+
+~~~txt
+add image to readme.md 
+![alt text](http://url/to/img.png)
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+~~~
+
 ## 参考資料 ##
 
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 * [Dockerイメージの保存場所を変更する方法 docker desktop for windows](https://penguin-coffeebreak.com/archives/534)
 * [docker run](http://docs.docker.jp/v19.03/engine/reference/commandline/run.html)
 * [docker reference](https://docs.docker.com/reference/)
 * [Jupyter Docker Stacks](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html)
 * [Jupyter Docker Stacks Selecting an Image](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html)
+* [plantuml](https://plantuml.com/ja/)

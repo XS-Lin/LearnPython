@@ -10,8 +10,13 @@
 * データ分析 (ISBN978-4-489-02332-3)
 * 統計学入門 (ISBN978-4-13-042065-5)
 * 人文・社会科学の統計学 (ISBN978-4-13-042066-2)
-* [利用可能な数式](https://katex.org/docs/supported.html)
-* [(アルファベット順)](https://katex.org/docs/support_table.html)
+* [Tex利用可能な数式](https://katex.org/docs/supported.html)
+* [Tex数式(アルファベット順)](https://katex.org/docs/support_table.html)
+* [Khan Academy - Math - Statistics and probability](https://www.khanacademy.org/math/statistics-probability)
+* [NumPy Reference](https://numpy.org/doc/stable/reference/index.html#reference)
+* [SciPy documentation](https://scipy.github.io/devdocs/index.html)
+* [pandas documentation](https://pandas.pydata.org/docs/)
+* [statsmodels](https://www.statsmodels.org/stable/index.html)
 
 ## メモ ##
 
@@ -104,12 +109,12 @@ $$
 \begin{alignedat}{2}
 10&x + &3&y = 2 \\
 3&x + &13&y =4
-\end{alignedat} 
+\end{alignedat}
 $$
 
 $$ \begin{gathered} a=b \\ e=b+c \end{gathered} $$
 
-$$ x = \begin{cases} 
+$$ x = \begin{cases}
        a &\text{if } b \\
        c &\text{if } d
        \end{cases}
@@ -174,10 +179,6 @@ $$ \xrightarrow[def]{abc} $$
 $$ %comment $$
 
 $$ \infty $$
-
-
-
-
 
 ### Pythonで学ぶ統計学の教科書 ###
 
@@ -659,8 +660,17 @@ pyplot.plot(x, stats.norm.pdf(x = x), color = 'black', linestyle='dotted')
 
 ~~~
 
+### ゼロからはじめるデータサイエンス ###
 
+#### 5章 統計 ####
 
+* シンプソンのパラドックス、ある状況を無視して得た相関係数は、誤った結果を導く可能性がある
 
+* 相関係数が0の場合、二つの変数には線形関係が存在しないことを示す。ところが、別の種類の関係を持つかもしれない。
 
-
+* 相関関係は因果関係ではないが、もしxとyの間に強い相関関係がある場合、以下のいずれかになる。
+  * xがyの原因である
+  * yがxの原因である
+  * 相互に他方の原因である
+  * 両者に影響する第三の原因がある
+  * 両者に関係は全くない
