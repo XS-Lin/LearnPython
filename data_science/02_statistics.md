@@ -1,9 +1,21 @@
-# 統計学入門 #
+# 統計学 #
 
-## 数式表記（TeX Math） ##
+## 参考資料 ##
 
-[利用可能な数式](https://katex.org/docs/supported.html)
-[(アルファベット順)](https://katex.org/docs/support_table.html)
+* Pythonで学ぶ統計学の教科書 (ISBN978-4-7981-5506-7)
+* ゼロからはじめるデータサイエンス (ISBN978-4-87311-911-3)
+* データサイエンス短期集中コース (ISBN978-4-274-22498-0)
+* RとPythonで学ぶ統計学入門 (ISBN978-4-274-22705-9)
+* 統計学基礎 (ISBN978-4-489-02227-2)
+* データ分析 (ISBN978-4-489-02332-3)
+* 統計学入門 (ISBN978-4-13-042065-5)
+* 人文・社会科学の統計学 (ISBN978-4-13-042066-2)
+* [利用可能な数式](https://katex.org/docs/supported.html)
+* [(アルファベット順)](https://katex.org/docs/support_table.html)
+
+## メモ ##
+
+### 数式表記（TeX Math） ###
 
 $$ a' a'' a''' a^{\prime} \acute{a} \bar{a} \breve{a} \check{a} $$
 
@@ -163,7 +175,9 @@ $$ %comment $$
 
 $$ \infty $$
 
-## 再確認ためのメモ ##
+
+
+
 
 ### Pythonで学ぶ統計学の教科書 ###
 
@@ -213,7 +227,6 @@ rho_0 = cov_0 / scipy.sqrt(sigma_2_x_sample * sigma_2_y_sample)
 # ピアソンの積率相関係数
 scipy.corrcoef(x, y)
 ~~~
-
 
 #### 第３部 第3章 matplotlib・seabornによるデータの可視化 ####
 
