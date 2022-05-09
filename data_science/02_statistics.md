@@ -17,6 +17,7 @@
 * [SciPy documentation](https://scipy.github.io/devdocs/index.html)
 * [pandas documentation](https://pandas.pydata.org/docs/)
 * [statsmodels](https://www.statsmodels.org/stable/index.html)
+* [【統計学の基礎】](https://www.youtube.com/watch?v=pJKMfoemi08&list=PL0m3j1lW7Kevesdrq1_ZqfRGpAZSG10uv)
 
 ## メモ ##
 
@@ -648,16 +649,44 @@ pyplot.plot(x, stats.norm.pdf(x = x), color = 'black', linestyle='dotted')
 
 #### 第３部 第7章 推定 ####
 
-##### ts #####
+##### 点推定 #####
 
 ~~~python
-
+import pandas as pd
+fish = pd.read_csv("./data/01/3-7-1-fish_length.csv")["length"]
 ~~~
 
-##### ts #####
- 
-~~~python
+母数(母集団分布のパラメータ)をある1つの値として指定する推定方法
 
+~~~python
+import numpy as np
+mu = np.mean(fish)
+sigma_2 = np.var(fish,ddof=1)
+~~~
+
+##### 空間推定 #####
+
+* 意味:推定値に幅を持たせた推定方法
+* 解析:母集団から標本取得して信頼空間の計算を複数回実施し、母数(母集団分布のパラメータ)が信頼係数の割合に含まれる。
+
+~~~python
+import numpy as np
+df = len(fish) - 1
+se = sp.sqrt(sigma_2 / len(fish))
+interval = stats.t.interval(alpha=0.95,df = df,loc = mu,scale=se)
+~~~
+
+#### 第３部 第8章 統計的仮説検定 ####
+
+~~~python
+junk_food = pd.read_csv("./data/01/3-8-1-junk-food-weight.csv")["weight"]
+mu = sp.mean(junk_food)
+df = len(junk_food) - 1
+sigma = sp.std(junk_food,ddof=1)
+se = sigma / sp.sqrt(len(junk_food))
+t_value = (mu - 50) / se
+alpha = stats.t.cdf(t_value,df=df)
+stats.ttest_1samp(junk_food,50)
 ~~~
 
 ### ゼロからはじめるデータサイエンス ###
@@ -709,6 +738,10 @@ plt.title("Various Normal pdfs")
 plt.show()
 ~~~
 
-#### 7章 仮説と推定 ####
+#### 10章 データ操作 ####
 
-### データ分析 ###
+* typing.NamedTupleで不注意にデータ値変更ミスを減らす
+* dataclasses.dataclassでspecial method生成
+* 入力データの欠損、外れ、不良をチェック(職務責任ではないが、問題を避けるべき)
+* tqdmで処理processを可視化する
+* 次元削減、主成分分析

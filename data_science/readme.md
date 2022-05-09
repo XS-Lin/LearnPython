@@ -8,7 +8,7 @@
 docker pull jupyter/datascience-notebook
 docker run -it --rm -p 10000:8888 -v D:/Site/MyScript/python_test/data_science/datascience-notebook:/home/jovyan/work jupyter/datascience-notebook
 # Tokenは毎回起動の時に変わため、コンソールから確認
-# http://127.0.0.1:10000/lab?token=0b0b5de8e611de13175e7db9e7cd251df5f4b1280c0bbd60
+# http://127.0.0.1:10000/lab?token=467a1ee15377171330aa032b9917650a34b3fb6d5e0273c1
 ~~~
 
 ## Spark練習 ##

@@ -134,6 +134,19 @@ kubectl cp
 kubectl plugin list
 ~~~
 
+Selector
+
+* key=value
+* key!=value
+* key in (value1,value2)
+* key notin (value1,value2)
+* key
+* !key
+
+~~~powershell
+kubectl get deployments --selector="xxx"
+~~~
+
 ~~~powershell
 # podが起動しない場合のデバッグ
 kubectl logs
@@ -143,4 +156,19 @@ kubectl run
 kubectl run --iamge=nginx:1.16 --restart=Never --rm -it sample-debug --command -- /bin/sh
 ~~~
 
+* Label
+  * オブジェクトのメタデータ、フィルタリング可能
+* Annotation
+  * ツールやライブラリためのメタデータ
+* AnnotationとLabelの使い分け(機能が部分重複しているため、好みで選択可能だが、一般的に以下の時に利用)
+  * オブジェクトの変更理由を記録
+  * 特別スケジューリングポリシーの伝達
+  * リソースを更新したツールと更新内容の記述
+  * Labelで表現しにくいビルド、リリース、イメージ情報など
+  * ReplicaSetの追跡情報
+  * UIの見た目の品質や使いやすさを高める情報(base64のiconなど)
+  * Kubernetesでのプロトタイプ機能提供
+
 #### 5章 WorkloadsAPIsカテゴリ ####
+
+
