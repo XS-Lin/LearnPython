@@ -169,6 +169,46 @@ kubectl run --iamge=nginx:1.16 --restart=Never --rm -it sample-debug --command -
   * UIの見た目の品質や使いやすさを高める情報(base64のiconなど)
   * Kubernetesでのプロトタイプ機能提供
 
-#### 5章 WorkloadsAPIsカテゴリ ####
+#### 5~8章 APIsカテゴリ ####
 
+* Workloads
+  * Pod
+  * ReplicationController
+  * ReplicaSet
+  * Deployment
+  * DaemonSet
+  * StatefulSet
+  * Job
+  * CronJob
+* Service
+  * Service
+    * ClusterIP
+    * ExternalIP
+    * NodePort
+    * LoadBalancer
+    * Headless (None)
+    * ExternalName
+    * None-Selector
+  * Ingress
+* Config & Storage
+  * Secret
+  * ConfigMap
+  * PersistentVolumeClaim
+* Cluster
+  * Node
+  * Namespace
+  * PersistentVolume
+  * ResourceQuota
+  * ServiceAccount
+  * Role
+  * ClusterRole
+  * RoleBinding
+  * ClusterRoleBinding
+  * NetworkPolicy
+* Metadata
+  * LimitRange
+  * HorizonalPodAutoscaler
+  * PodDisruptionBudget
+  * CustomResourceDefinition
+  * その他内部リソース
 

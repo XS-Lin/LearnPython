@@ -70,7 +70,7 @@ $$ ( \big( \Big( \bigg( \Bigg( $$
 $$
 \begin{matrix}
 a & b \\
-c & d 
+c & d
 \end{matrix}
 $$
 
